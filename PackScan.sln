@@ -1,0 +1,106 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33626.354
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1EF8F5B9-DD77-4162-A819-85A2B49FED7B}"
+	ProjectSection(SolutionItems) = preProject
+		src\NuGet.Metadata.props = src\NuGet.Metadata.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{40512514-8795-4C6A-A58F-6AFC87C17B2F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		global.json = global.json
+		LICENSE = LICENSE
+		nuget.config = nuget.config
+		ReadMe.md = ReadMe.md
+		spelling_exclusion.dic = spelling_exclusion.dic
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{C20C1112-EF7A-48C1-9282-872163BBDFC4}"
+	ProjectSection(SolutionItems) = preProject
+		.config\dotnet-tools.json = .config\dotnet-tools.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B4BAADD5-BEF6-4D5B-9CB6-48C85D7D5D06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackScan.Tool", "src\PackScan.Tool\PackScan.Tool.csproj", "{26685B24-B2D0-4C68-AE5F-230F9424DBF5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackScan.PackagesProvider.Abstractions", "src\PackScan.PackagesProvider.Abstractions\PackScan.PackagesProvider.Abstractions.csproj", "{6A110BE4-B6E9-48A6-BFEB-1E3F2E90B84D}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PackScan.Shared", "src\PackScan.Shared\PackScan.Shared.shproj", "{9E8281F2-EC4E-404E-8D3C-72759FEC6D62}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackScan.PackagesProvider.Generator", "src\PackScan.PackagesProvider.Generator\PackScan.PackagesProvider.Generator.csproj", "{51C5972D-550E-4123-98DD-4ED087E44C5F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackScan.PackagesReader", "src\PackScan.PackagesReader\PackScan.PackagesReader.csproj", "{8F2E4832-2A8E-46CB-98F8-3ECE0F45CF3D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackScan.Analyzer", "src\PackScan.Analyzer\PackScan.Analyzer.csproj", "{19E1358B-9100-4905-BA7B-A38A6C29E723}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackScan.Analyzer.Test", "test\PackScan.Analyzer.Test\PackScan.Analyzer.Test.csproj", "{167D32AA-CBBC-4772-9898-41A69A17AED8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F9F7EE5C-DD30-439B-ABB0-33947D2C833B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackScan.Defaults", "src\PackScan.Defaults\PackScan.Defaults.csproj", "{09F68765-D0A7-4522-85AE-F3B66E3562C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{26685B24-B2D0-4C68-AE5F-230F9424DBF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26685B24-B2D0-4C68-AE5F-230F9424DBF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26685B24-B2D0-4C68-AE5F-230F9424DBF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26685B24-B2D0-4C68-AE5F-230F9424DBF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A110BE4-B6E9-48A6-BFEB-1E3F2E90B84D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A110BE4-B6E9-48A6-BFEB-1E3F2E90B84D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A110BE4-B6E9-48A6-BFEB-1E3F2E90B84D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A110BE4-B6E9-48A6-BFEB-1E3F2E90B84D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51C5972D-550E-4123-98DD-4ED087E44C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51C5972D-550E-4123-98DD-4ED087E44C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51C5972D-550E-4123-98DD-4ED087E44C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51C5972D-550E-4123-98DD-4ED087E44C5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F2E4832-2A8E-46CB-98F8-3ECE0F45CF3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F2E4832-2A8E-46CB-98F8-3ECE0F45CF3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F2E4832-2A8E-46CB-98F8-3ECE0F45CF3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F2E4832-2A8E-46CB-98F8-3ECE0F45CF3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19E1358B-9100-4905-BA7B-A38A6C29E723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19E1358B-9100-4905-BA7B-A38A6C29E723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19E1358B-9100-4905-BA7B-A38A6C29E723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19E1358B-9100-4905-BA7B-A38A6C29E723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{167D32AA-CBBC-4772-9898-41A69A17AED8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{167D32AA-CBBC-4772-9898-41A69A17AED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{167D32AA-CBBC-4772-9898-41A69A17AED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{167D32AA-CBBC-4772-9898-41A69A17AED8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09F68765-D0A7-4522-85AE-F3B66E3562C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09F68765-D0A7-4522-85AE-F3B66E3562C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09F68765-D0A7-4522-85AE-F3B66E3562C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09F68765-D0A7-4522-85AE-F3B66E3562C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C20C1112-EF7A-48C1-9282-872163BBDFC4} = {40512514-8795-4C6A-A58F-6AFC87C17B2F}
+		{26685B24-B2D0-4C68-AE5F-230F9424DBF5} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
+		{6A110BE4-B6E9-48A6-BFEB-1E3F2E90B84D} = {F9F7EE5C-DD30-439B-ABB0-33947D2C833B}
+		{9E8281F2-EC4E-404E-8D3C-72759FEC6D62} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
+		{51C5972D-550E-4123-98DD-4ED087E44C5F} = {F9F7EE5C-DD30-439B-ABB0-33947D2C833B}
+		{8F2E4832-2A8E-46CB-98F8-3ECE0F45CF3D} = {F9F7EE5C-DD30-439B-ABB0-33947D2C833B}
+		{19E1358B-9100-4905-BA7B-A38A6C29E723} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
+		{167D32AA-CBBC-4772-9898-41A69A17AED8} = {B4BAADD5-BEF6-4D5B-9CB6-48C85D7D5D06}
+		{F9F7EE5C-DD30-439B-ABB0-33947D2C833B} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
+		{09F68765-D0A7-4522-85AE-F3B66E3562C0} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB925338-FA98-438B-919B-EB37667CC9A9}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\PackScan.Shared\PackScan.Shared.projitems*{51c5972d-550e-4123-98dd-4ed087e44c5f}*SharedItemsImports = 5
+		src\PackScan.Shared\PackScan.Shared.projitems*{8f2e4832-2a8e-46cb-98f8-3ece0f45cf3d}*SharedItemsImports = 5
+		src\PackScan.Shared\PackScan.Shared.projitems*{9e8281f2-ec4e-404e-8d3c-72759fec6d62}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal

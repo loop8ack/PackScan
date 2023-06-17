@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.Build.NoTargets/3.7.0">
+
+  <Import Project="../NuGet.Metadata.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <DevelopmentDependency>true</DevelopmentDependency>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="PackScan.Defaults.targets" PackagePath="build\$(PackageId).targets" />
+  </ItemGroup>
+  
+</Project>

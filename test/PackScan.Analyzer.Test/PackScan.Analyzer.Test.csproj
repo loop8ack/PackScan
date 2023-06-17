@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0</TargetFrameworks>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+
+    <AllowEmptyLicenses>true</AllowEmptyLicenses>
+    <AllowedLicensesAnalyzationEnabled>True</AllowedLicensesAnalyzationEnabled>
+    <PackagesProviderLoadContentsParallel Condition="'$(Configuration)' == 'Debug'">False</PackagesProviderLoadContentsParallel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AllowedLicense Include="MIT" />
+    <AllowedLicense Include="Apache-2.0" />
+    <AllowedLicenseByPackage Include="Microsoft.CodeCoverage" />
+    <AllowedLicenseByPackage Include="Microsoft.NET.Test.Sdk" />
+    <AllowedLicenseByPackage Include="Microsoft.TestPlatform.ObjectModel" />
+    <AllowedLicenseByPackage Include="Microsoft.TestPlatform.TestHost" />
+    <AllowedLicenseByOwner Include="Microsoft" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.5.0" />
+    <PackageReference Include="xunit.core" Version="2.5.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="all" />
+
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="coverlet.collector" Version="3.2.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Test packages -->
+    <PackageReference Include="Moq" Version="[4.18.4]" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PackScan.Analyzer\PackScan.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\src\PackScan.PackagesProvider.Abstractions\PackScan.PackagesProvider.Abstractions.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\src\PackScan.Analyzer\_Analyzer.targets" />
+
+</Project>

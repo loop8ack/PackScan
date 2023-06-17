@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PackageTools.Analyzer.Test": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\..\\test\\PackScan.Analyzer.Test\\PackScan.Analyzer.Test.csproj"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PackageTools": {
+      "commandName": "Project",
+      "commandLineArgs": "generate-packages-provider -p \"../../PackScan.Tool.csproj\" --clear-output True"
+    }
+  }
+}

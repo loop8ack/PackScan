@@ -1,0 +1,39 @@
+<Project>
+
+  <ItemGroup>
+    
+    <!-- Core -->
+    <CompilerVisibleProperty Include="Language" />
+    <CompilerVisibleProperty Include="TargetFramework" />
+    <CompilerVisibleProperty Include="RuntimeIdentifier" />
+    <CompilerVisibleProperty Include="MSBuildProjectDirectory" />
+    <CompilerVisibleProperty Include="BaseIntermediateOutputPath" />
+    
+    <!-- Reader -->
+    <CompilerVisibleProperty Include="_KnownPackageIds" />
+
+    <!-- Analyzer -->
+    <CompilerVisibleProperty Include="AllowedLicensesAnalyzationEnabled" />
+    <CompilerVisibleProperty Include="AnalyzePackageDependencyLicenses" />
+    <CompilerVisibleProperty Include="AllowEmptyLicenses" />
+    <CompilerVisibleProperty Include="_AllowedLicensesByPackage" />
+    <CompilerVisibleProperty Include="_AllowedLicensesByOwner" />
+    <CompilerVisibleProperty Include="_AllowedLicense" />
+
+    <!-- Generator -->
+    <CompilerVisibleProperty Include="PackagesProviderGenerationEnabled" />
+    <CompilerVisibleProperty Include="PackagesProviderGeneratePublic" />
+    <CompilerVisibleProperty Include="PackagesProviderGenerateClassName" />
+    <CompilerVisibleProperty Include="PackagesProviderGenerateNamespace" />
+    <CompilerVisibleProperty Include="PackagesProviderNullableAnnotations" />
+    <CompilerVisibleProperty Include="PackagesProviderLoadContentsParallel" />
+    <CompilerVisibleProperty Include="PackagesProviderIconContentLoadMode" />
+    <CompilerVisibleProperty Include="PackagesProviderLicenseContentLoadMode" />
+    <CompilerVisibleProperty Include="PackagesProviderReadMeContentLoadMode" />
+    <CompilerVisibleProperty Include="PackagesProviderReleaseNotesContentLoadMode" />
+    <CompilerVisibleProperty Include="PackagesProviderDownloadCacheFolder" />
+    <CompilerVisibleProperty Include="PackagesProviderWorkingDirectory" />
+
+  </ItemGroup>
+  
+</Project>

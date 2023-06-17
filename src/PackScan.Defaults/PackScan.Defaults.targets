@@ -1,0 +1,120 @@
+<Project>
+
+  <PropertyGroup>
+    <IncludeWellKnownPackageIds Condition="'$(IncludeWellKnownPackageIds)' == ''">True</IncludeWellKnownPackageIds>
+    <IncludeWellKnownAllowedLicenses Condition="'$(IncludeWellKnownAllowedLicenses)' == ''">True</IncludeWellKnownAllowedLicenses>
+  </PropertyGroup>
+
+  <!-- Well known package ids -->
+  <ItemGroup Condition="$(IncludeWellKnownPackageIds)">
+    <!-- Microsoft .NET -->
+    <KnownPackageId Include="System" Owner="Microsoft" Product=".NET" />
+    <KnownPackageId Include="runtime" Owner="Microsoft" Product=".NET Runtime" />
+    <KnownPackageId Include="NETStandard." Owner="Microsoft" Product=".NET Standard" />
+
+    <!-- Microsoft Frameworks -->
+    <KnownPackageId Include="Microsoft" Owner="Microsoft" />
+    <KnownPackageId Include="Microsoft.Maui" Owner="Microsoft" Product="MAUI" />
+    <KnownPackageId Include="Microsoft.Azure" Owner="Microsoft" Product="Azure" />
+    <KnownPackageId Include="Microsoft.AspNetCore" Owner="Microsoft" Product="ASP.NET Core" />
+    <KnownPackageId Include="Microsoft.EntityFrameworkCore" Owner="Microsoft" Product="Entity Framework" />
+  </ItemGroup>
+
+  <!-- Well known licenses -->
+  <ItemGroup Condition="$(IncludeWellKnownAllowedLicenses)">
+    <AllowedLicenseByOwner Include="Microsoft" />
+    <AllowedLicense Include="MIT" />
+  </ItemGroup>
+
+  <!-- Reader configuration -->
+  <PropertyGroup>
+
+    <!-- Known package ids -->
+    <_KnownPackageIds>@(KnownPackageId->'%(Identity)=%(Owner),%(Product)', '|')</_KnownPackageIds>
+
+  </PropertyGroup>
+
+  <!-- Analyzer configuration -->
+  <PropertyGroup>
+
+    <!-- Is enabled -->
+    <AllowedLicensesAnalyzationEnabled Condition="'$(AllowedLicensesAnalyzationEnabled)' == ''">True</AllowedLicensesAnalyzationEnabled>
+
+    <!-- Include package dependencies -->
+    <AnalyzePackageDependencyLicenses Condition="'$(AnalyzePackageDependencyLicenses)' == ''">True</AnalyzePackageDependencyLicenses>
+
+    <!-- Allow empty licenses -->
+    <AllowEmptyLicenses Condition="'$(AllowEmptyLicense)' == ''">False</AllowEmptyLicenses>
+
+    <!-- Allowed licenses by package id -->
+    <_AllowedLicensesByPackage>@(AllowedLicenseByPackage,',')</_AllowedLicensesByPackage>
+
+    <!-- Allowed licenses by owner -->
+    <_AllowedLicensesByOwner>@(AllowedLicenseByOwner,',')</_AllowedLicensesByOwner>
+
+    <!-- Allowed license names -->
+    <_AllowedLicense>@(AllowedLicense,',')</_AllowedLicense>
+
+  </PropertyGroup>
+
+  <!-- Generator configuration -->
+  <PropertyGroup>
+
+    <!-- Is enabled -->
+    <PackagesProviderGenerationEnabled Condition="'$(PackagesProviderGenerationEnabled)' == ''">True</PackagesProviderGenerationEnabled>
+
+    <!-- Public -->
+    <PackagesProviderGeneratePublic Condition="'$(PackagesProviderGeneratePublic)' == ''">False</PackagesProviderGeneratePublic>
+
+    <!-- Class name -->
+    <PackagesProviderGenerateClassName Condition="'$(PackagesProviderGenerateClassName)' == ''">Packages</PackagesProviderGenerateClassName>
+
+    <!-- Namespace -->
+    <PackagesProviderGenerateNamespace Condition="'$(PackagesProviderGenerateNamespace)' == ''">$(RootNamespace)</PackagesProviderGenerateNamespace>
+
+    <!-- Nullable annotations -->
+    <PackagesProviderNullableAnnotations Condition="'$(PackagesProviderNullableAnnotations)' == '' And '$(Nullable)' == 'disable'">False</PackagesProviderNullableAnnotations>
+    <PackagesProviderNullableAnnotations Condition="'$(PackagesProviderNullableAnnotations)' == ''">True</PackagesProviderNullableAnnotations>
+
+    <!-- Load contents parallel -->
+    <PackagesProviderLoadContentsParallel Condition="'$(PackagesProviderLoadContentsParallel)' == ''">False</PackagesProviderLoadContentsParallel>
+
+    <!-- Default content load mode -->
+    <PackagesProviderContentLoadMode Condition="'$(PackagesProviderContentLoadMode)' == ''"></PackagesProviderContentLoadMode>
+    
+    <!-- Icon content load mode -->
+    <PackagesProviderIconContentLoadMode Condition="'$(PackagesProviderIconContentLoadMode)' == ''">$(PackagesProviderContentLoadMode)</PackagesProviderIconContentLoadMode>
+    <PackagesProviderIconContentLoadMode Condition="'$(PackagesProviderIconContentLoadMode)' == ''">None</PackagesProviderIconContentLoadMode>
+
+    <!-- License content load mode -->
+    <PackagesProviderLicenseContentLoadMode Condition="'$(PackagesProviderLicenseContentLoadMode)' == ''">$(PackagesProviderContentLoadMode)</PackagesProviderLicenseContentLoadMode>
+    <PackagesProviderLicenseContentLoadMode Condition="'$(PackagesProviderLicenseContentLoadMode)' == ''">None</PackagesProviderLicenseContentLoadMode>
+
+    <!-- Readme content load mode -->
+    <PackagesProviderReadMeContentLoadMode Condition="'$(PackagesProviderReadMeContentLoadMode)' == ''">$(PackagesProviderContentLoadMode)</PackagesProviderReadMeContentLoadMode>
+    <PackagesProviderReadMeContentLoadMode Condition="'$(PackagesProviderReadMeContentLoadMode)' == ''">None</PackagesProviderReadMeContentLoadMode>
+
+    <!-- Release notes content load mode -->
+    <PackagesProviderReleaseNotesContentLoadMode Condition="'$(PackagesProviderReleaseNotesContentLoadMode)' == ''">$(PackagesProviderContentLoadMode)</PackagesProviderReleaseNotesContentLoadMode>
+    <PackagesProviderReleaseNotesContentLoadMode Condition="'$(PackagesProviderReleaseNotesContentLoadMode)' == ''">None</PackagesProviderReleaseNotesContentLoadMode>
+    
+  </PropertyGroup>
+
+  <!-- Generator tool configuration -->
+  <PropertyGroup>
+
+    <!-- Output folder path -->
+    <PackagesProviderOutputPath Condition="'$(PackagesProviderOutputPath)' == ''">PackagesProvider</PackagesProviderOutputPath>
+    
+    <!-- Content write mode -->
+    <PackagesProviderContentWriteMode Condition="'$(PackagesProviderContentWriteMode)' == ''">Embed</PackagesProviderContentWriteMode>
+    
+    <!-- Generate project file -->
+    <PackagesProviderGenerateProjectFile Condition="'$(PackagesProviderGenerateProjectFile)' == ''">True</PackagesProviderGenerateProjectFile>
+
+    <!-- Download cache folder -->
+    <PackagesProviderDownloadCacheFolder Condition="'$(PackagesProviderDownloadCacheFolder)' == ''"></PackagesProviderDownloadCacheFolder>
+    
+  </PropertyGroup>
+
+</Project>

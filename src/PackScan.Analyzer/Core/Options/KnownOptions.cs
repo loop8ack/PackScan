@@ -9,8 +9,8 @@ internal static class KnownOptions
     private static readonly IReadOnlyDictionary<string, Language> _languageValueMapping =
         new Dictionary<string, Language>(StringComparer.OrdinalIgnoreCase)
         {
-            ["C#"] = Language.CSharp,
-            ["F#"] = Language.FSharp,
+            ["C"] = Language.CSharp,
+            ["F"] = Language.FSharp,
             ["VB"] = Language.VisualBasic,
         };
 

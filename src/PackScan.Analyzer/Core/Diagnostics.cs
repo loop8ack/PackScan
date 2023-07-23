@@ -151,7 +151,7 @@ internal static class Diagnostics
             = new DiagnosticDescriptor(
                 id: $"{Prefix}{(int)Id.EmptyLicenseIsNotAllowed:000}",
                 title: "Packages without a license are not allowed",
-                messageFormat: "Empty licenses are not allowed. Possibly the license could not be read. Consider allowing the package directly (AllowedLicenseByPackage) or empty licenses (AllowEmptyLicense). Affected packages: {0}",
+                messageFormat: "Empty licenses are not allowed. Possibly the license could not be read. Consider allowing the package directly (AllowedLicenseByPackage) or empty licenses (AllowEmptyLicenses). Affected packages: {0}",
                 category: Category,
                 DiagnosticSeverity.Warning,
                 isEnabledByDefault: true);

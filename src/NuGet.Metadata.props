@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.1.0</Version>
+    <Version>0.1.0-alpha</Version>
     <Authors>Loop8ack</Authors>
     <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -15,12 +15,12 @@
     <PackageTags>msbuild;package;generator</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
     <Copyright>Copyright $([System.DateTime]::Now.ToString(yyyy)) $(Authors)</Copyright>
-    <Description>Simplify package information retrieval and license compliance in your .NET projects. Access comprehensive package details, including dependencies, icons, license texts, ReadMe content, and release notes directly from your code.</Description>
+    <Description>Simplify package information retrieval and license compliance in your .NET projects. Access comprehensive package details, including dependencies, icons, license texts, ReadMe content, release notes and more directly from your code.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)\..\LICENSE" PackagePath="\" InProject="false" Visible="false" Pack="true" />
-    <Content Include="$(MSBuildThisFileDirectory)\..\ReadMe.md" PackagePath="\" InProject="false" Visible="false" Pack="true" />
+    <Content Include="$(MSBuildThisFileDirectory)\..\LICENSE" PackagePath="\" Visible="false" Pack="true" />
+    <Content Include="$(MSBuildThisFileDirectory)\..\ReadMe.md" PackagePath="\" Visible="false" Pack="true" />
   </ItemGroup>
   
 </Project>

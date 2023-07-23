@@ -11,9 +11,6 @@ indent_style = space
 end_of_line = lf
 insert_final_newline = true
 tab_width = 4
-spelling_languages = en-us
-spelling_exclusion_path = .\spelling_exclusion.dic
-spelling_use_default_exclusion_dictionary = true
 
 [*.json]
 indent_size = 2

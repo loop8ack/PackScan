@@ -8,6 +8,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>packscan</ToolCommandName>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    
     <PackagesProviderOutputPath>_debug/result</PackagesProviderOutputPath>
     <PackagesProviderContentLoadMode>PreferUrl</PackagesProviderContentLoadMode>
     <PackagesProviderDownloadCacheFolder>_debug/DownloadCache</PackagesProviderDownloadCacheFolder>

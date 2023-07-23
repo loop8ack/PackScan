@@ -12,57 +12,72 @@ The included analyzer helps you ensure license compliance by identifying package
 Additionally, these tools offer optional configurations to generate code that provides access to icons, license texts, ReadMe content, release notes, and other package information.
 You can include these additional resources based on your specific needs.
 
-Key Features:
-* Generate code for easy access to package data
-* Analyze and enforce license compliance
-* Customizable configuration settings
-* Seamless integration with your projects
-* Possibility of use with CI/CD
+Currently, the project only supports C#, but it is designed in a way that allows for future support of VB.NET or F#.
 
-You have two options to choose from:
+### Key Features
 
-**[PackScan.Tool](https://www.nuget.org/packages/PackScan.Tool)**
+1. **Generate Package Data:**</br>
+Generate simple and easily accessible code to retrieve detailed information about the packages installed in your project.
+With this code, you can easily access package versions, dependencies, licenses, and other data.
+
+3. **Check License Compliance:**</br>
+The included analyzer helps you ensure compliance with licensing requirements.
+Identify packages that contain licenses not compatible with your project or company policies, enabling you to address potential licensing issues early on.
+
+5. **Customizable Configuration:**</br>
+Tailor the behavior of the tool to perfectly match your requirements.
+Adjust the configuration to change how package contents are loaded, code is generated, and license analyses are performed.
+
+7. **Seamless Project Integration:**</br>
+The project can be seamlessly integrated into your existing projects.
+Install the required NuGet packages and configure the settings accordingly. Accessing package data and license information is straightforward through the generated code.
+
+9. **Possible Use with CI/CD:**</br>
+The .NET Tool allows integration into CI/CD processes, automating package analysis and management in your continuous integration and deployment workflows.
+
+### **[PackScan.Tool](https://www.nuget.org/packages/PackScan.Tool)**
 
 The .NET Tool provides integration into CI/CD processes and supports different ways of depositing content files.
 
-**[PackScan.Analyzer](https://www.nuget.org/packages/PackScan.Analyzer)**
+### **[PackScan.Analyzer](https://www.nuget.org/packages/PackScan.Analyzer)**
 
 The Analyzer can be configured directly in your project and supports checking which packages and licenses are allowed.
 
 # Installation
 
-For both options, you need to install the NuGet package [PackScan.PackagesProvider.Abstractions](https://www.nuget.org/packages/PackScan.PackagesProvider.Abstractions) in those projects in which you want to use the generated code.</br>
-You can install it using the NuGet package manager or add the following lines to your project:
+### Analyzer
+
+Install the analyzer:
 
 ```
-<ItemGroup>
-    <PackageReference Include="PackScan.PackagesProvider.Abstractions" Version="x.x.x" /> <!-- use the latest version -->
-</ItemGroup>
+dotnet add package --prerelease PackScan.Analyzer
 ```
 
-## .NET Tool
-
-To install the .NET Tool, run [dotnet tool install](https://learn.microsoft.com/de-de/dotnet/core/tools/dotnet-tool-install) with "PackScan.Tool".
-
-It is also recommended to install the following package to have all the standard configurations:
+Additionally, you need to install the following package in all projects where you want to use the code:
 
 ```
-<ItemGroup>
-    <PackageReference Include="PackScan.Defaults" Version="x.x.x" /> <!-- use the latest version -->
-</ItemGroup>
+dotnet add package --prerelease PackScan.PackagesProvider.Abstractions
 ```
 
-## Analyzer
+### .NET Tool
 
-To install the analyzer, use the NuGet package manager or add the following lines to your project:
+Install the .NET Tool:
 
 ```
-<ItemGroup>
-    <PackageReference Include="PackScan.Analyzer" Version="x.x.x" /> <!-- use the latest version -->
-</ItemGroup>
+dotnet tool install --prerelease --global PackScan.Tool
 ```
 
-Both options offer similar benefits and can be selected and configured based on your specific needs and requirements.
+It is also necessary to install the following package to enable all configuration features:
+
+```
+dotnet add package --prerelease PackScan.Defaults
+```
+
+Additionally, you need to install the following package in all projects where you want to use the code:
+
+```
+dotnet add package --prerelease PackScan.PackagesProvider.Abstractions
+```
 
 # Generated Result
 
@@ -75,7 +90,9 @@ Here's how you can use the generated code:
 var serilog = Packages.GetPackageById("Serilog");
 
 foreach (var package in Packages.GetPackages())
+{
     Console.WriteLine($"{package.Id} | {package.Version.Value} | {package.License?.Expression}");
+}
 
 // or with an instance
 
@@ -84,7 +101,9 @@ IPackagesProvider instance = new Packages();
 var serilog = instance.GetPackageById("Serilog");
 
 foreach (var package in instance.GetPackages())
+{
     Console.WriteLine($"{package.Id} | {package.Version.Value} | {package.License?.Expression}");
+}
 
 // or with dependency injection
 
@@ -96,7 +115,9 @@ var packagesProvider = services.GetRequiredService<IPackagesProvider>();
 var serilog = instance.GetPackageById("Serilog");
 
 foreach (var package in instance.GetPackages())
+{
     Console.WriteLine($"{package.Id} | {package.Version.Value} | {package.License?.Expression}");
+}
 
 ```
 
@@ -140,26 +161,6 @@ dotnet package-tools generate-packages-provider --output PackagesProvider --load
 ## Analyzer
 
 ### Project Properties
-
-- **IncludeWellKnownPackageIds**</br>
-Specifies whether to include the default set of KnownPackageId entries (`true`) or not (`false`).</br>
-Default value: `true`</br>
-Well-known package id values:
-  - **System** | Owner: Microsoft, Product: .NET
-  - **runtime** | Owner: Microsoft, Product: .NET Runtime
-  - **NETStandard** | Owner: Microsoft, Product: .NET Standard
-  - **Microsoft** | Owner: Microsoft
-  - **Microsoft.Maui** | Owner: Microsoft, Product: MAUI
-  - **Microsoft.Azure** | Owner: Microsoft, Product: Azure
-  - **Microsoft.AspNetCore** | Owner: Microsoft, Product: ASP.NET Core
-  - **Microsoft.EntityFrameworkCore** | Owner: Microsoft, Product: Entity Framework
-
-- **IncludeWellKnownAllowedLicenses**</br>
-Specifies whether to include the default set of allowed licenses by expression or owner (`true`) or not (`false`).</br>
-Default value: `true`</br>
-Well-known licenses:
-  - By expression: MIT
-  - By owner: Microsoft
 
 - **AllowedLicensesAnalyzationEnabled**</br>
 Determines whether to check the licenses of the installed packages (`true`) or not (`false`).</br>
@@ -226,13 +227,24 @@ A list of all allowed licenses or license expressions.</br>
 - **AllowedLicenseByOwner**</br>
 A list of all explicitly allowed package owners to be excluded from the license check.</br>
 Please note that you need to map the owners manually as they cannot be automatically extracted.</br>
+Default values: `Microsoft`
 
 - **AllowedLicenseByPackage**</br>
 A list of all explicitly allowed packages to be excluded from the license check.</br>
+Default values: `MIT` `Apache-2.0`
 
 - **KnownPackageId**</br>
 Allows registering known package ID prefixes along with their corresponding owners and products.
 For each package, the last matching prefix is used to determine the associated data.</br>
+Default values: </br>
+  - **System** | Owner: Microsoft, Product: .NET
+  - **runtime** | Owner: Microsoft, Product: .NET Runtime
+  - **NETStandard** | Owner: Microsoft, Product: .NET Standard
+  - **Microsoft** | Owner: Microsoft
+  - **Microsoft.Maui** | Owner: Microsoft, Product: MAUI
+  - **Microsoft.Azure** | Owner: Microsoft, Product: Azure
+  - **Microsoft.AspNetCore** | Owner: Microsoft, Product: ASP.NET Core
+  - **Microsoft.EntityFrameworkCore** | Owner: Microsoft, Product: Entity Framework
 
 ## .NET Tool
 

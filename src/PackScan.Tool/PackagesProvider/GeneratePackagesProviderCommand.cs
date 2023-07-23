@@ -78,6 +78,8 @@ internal static class GeneratePackagesProviderCommand
 
     private static string GetProjectFilePath(string projectPath)
     {
+        projectPath = Path.GetFullPath(projectPath);
+
         if (File.Exists(projectPath))
             return projectPath;
 

@@ -6,17 +6,21 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <BuildOutputTargetFolder>analyzers/dotnet/cs</BuildOutputTargetFolder>
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <DevelopmentDependency>true</DevelopmentDependency>
     <IsRoslynComponent>true</IsRoslynComponent>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="PackScan.Analyzer.props" PackagePath="build\$(PackageId).props" />
     <Content Include="PackScan.Analyzer.targets" PackagePath="build\$(PackageId).targets" />
+
+    <Content Include="..\PackScan.Defaults\PackScan.Defaults.props" PackagePath="build\%(Filename)%(Extension)" Visible="False" Pack="true" />
+    <Content Include="..\PackScan.Defaults\PackScan.Defaults.targets" PackagePath="build\%(Filename)%(Extension)" Visible="False" Pack="true" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" />
@@ -25,9 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PackScan.PackagesProvider.Abstractions\PackScan.PackagesProvider.Abstractions.csproj" />
-    <ProjectReference Include="..\PackScan.PackagesProvider.Generator\PackScan.PackagesProvider.Generator.csproj" />
-    <ProjectReference Include="..\PackScan.PackagesReader\PackScan.PackagesReader.csproj" />
+    <ProjectReference Include="..\PackScan.PackagesProvider.Abstractions\PackScan.PackagesProvider.Abstractions.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\PackScan.PackagesProvider.Generator\PackScan.PackagesProvider.Generator.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\PackScan.PackagesReader\PackScan.PackagesReader.csproj" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Embed referenced dlls so that they can be loaded at runtime  -->
@@ -63,5 +67,5 @@
       </EmbeddedResource>
     </ItemGroup>
   </Target>
-  
+
 </Project>

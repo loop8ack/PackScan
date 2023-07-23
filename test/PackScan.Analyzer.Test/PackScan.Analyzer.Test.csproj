@@ -1,8 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\src\PackScan.Analyzer\PackScan.Analyzer.props" />
+  <Import Project="..\..\src\PackScan.Defaults\PackScan.Defaults.props" />
+  
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0</TargetFrameworks>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <NoWarn>$(NoWarn);NETSDK1138</NoWarn>
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
 
@@ -10,16 +14,6 @@
     <AllowedLicensesAnalyzationEnabled>True</AllowedLicensesAnalyzationEnabled>
     <PackagesProviderLoadContentsParallel Condition="'$(Configuration)' == 'Debug'">False</PackagesProviderLoadContentsParallel>
   </PropertyGroup>
-
-  <ItemGroup>
-    <AllowedLicense Include="MIT" />
-    <AllowedLicense Include="Apache-2.0" />
-    <AllowedLicenseByPackage Include="Microsoft.CodeCoverage" />
-    <AllowedLicenseByPackage Include="Microsoft.NET.Test.Sdk" />
-    <AllowedLicenseByPackage Include="Microsoft.TestPlatform.ObjectModel" />
-    <AllowedLicenseByPackage Include="Microsoft.TestPlatform.TestHost" />
-    <AllowedLicenseByOwner Include="Microsoft" />
-  </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
@@ -44,6 +38,7 @@
     <ProjectReference Include="..\..\src\PackScan.PackagesProvider.Abstractions\PackScan.PackagesProvider.Abstractions.csproj" />
   </ItemGroup>
 
-  <Import Project="..\..\src\PackScan.Analyzer\_Analyzer.targets" />
+  <Import Project="..\..\src\PackScan.Analyzer\PackScan.Analyzer.targets" />
+  <Import Project="..\..\src\PackScan.Defaults\PackScan.Defaults.targets" />
 
 </Project>

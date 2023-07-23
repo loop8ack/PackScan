@@ -1,0 +1,6 @@
+<Project>
+
+  <Import Project="$(MSBuildThisFileDirectory)\PackScan.Defaults.props"
+          Condition="Exists('$(MSBuildThisFileDirectory)\PackScan.Defaults.props')"/>
+  
+</Project>

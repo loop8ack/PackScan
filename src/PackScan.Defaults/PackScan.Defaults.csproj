@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="PackScan.Defaults.props" PackagePath="build\$(PackageId).props" />
     <Content Include="PackScan.Defaults.targets" PackagePath="build\$(PackageId).targets" />
   </ItemGroup>
   

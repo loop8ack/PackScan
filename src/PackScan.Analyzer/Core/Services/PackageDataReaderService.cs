@@ -45,7 +45,10 @@ internal sealed class PackageDataReaderService
 
         IEnumerable<KnownPackageId> knownPackageIds = ParseKnownPackageIds(KnownPackageIds.Value).ToArray();
 
-        IPackageDataReader reader = new PackageDataReader(assetsFilePath, TargetFramework, RuntimeIdentifier, knownPackageIds);
+        IPackageDataReader reader = new PackageDataReader(assetsFilePath, TargetFramework, RuntimeIdentifier)
+        {
+            KnownPackageIds = ParseKnownPackageIds(KnownPackageIds.Value).ToArray()
+        };
 
         return reader.Read();
     }

@@ -1,0 +1,43 @@
+<Project>
+
+  <PropertyGroup>
+    <_HasPackScanDefaultsProps Condition="'$(_HasPackScanDefaultsProps)' == ''">False</_HasPackScanDefaultsProps>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="!$(_HasPackScanDefaultsProps)">
+
+      <!-- ==================================================== -->
+
+      <PropertyGroup>
+        <_HasPackScanDefaultsProps>True</_HasPackScanDefaultsProps>
+      </PropertyGroup>
+      
+      <!-- Well known package ids -->
+      <ItemGroup>
+        <!-- Microsoft .NET -->
+        <KnownPackageId Include="System" Owner="Microsoft" Product=".NET" />
+        <KnownPackageId Include="runtime" Owner="Microsoft" Product=".NET Runtime" />
+        <KnownPackageId Include="NETStandard" Owner="Microsoft" Product=".NET Standard" />
+
+        <!-- Microsoft Frameworks -->
+        <KnownPackageId Include="Microsoft" Owner="Microsoft" />
+        <KnownPackageId Include="Microsoft.Maui" Owner="Microsoft" Product="MAUI" />
+        <KnownPackageId Include="Microsoft.Azure" Owner="Microsoft" Product="Azure" />
+        <KnownPackageId Include="Microsoft.AspNetCore" Owner="Microsoft" Product="ASP.NET Core" />
+        <KnownPackageId Include="Microsoft.EntityFrameworkCore" Owner="Microsoft" Product="Entity Framework" />
+      </ItemGroup>
+
+      <!-- Well known licenses -->
+      <ItemGroup>
+        <AllowedLicense Include="MIT" />
+        <AllowedLicense Include="Apache-2.0" />
+        <AllowedLicenseByOwner Include="Microsoft" />
+      </ItemGroup>
+
+      <!-- ==================================================== -->
+      
+    </When>
+  </Choose>
+
+</Project>

@@ -1,5 +1,8 @@
 <Project>
 
+  <Import Project="$(MSBuildThisFileDirectory)\PackScan.Defaults.targets"
+          Condition="Exists('$(MSBuildThisFileDirectory)\PackScan.Defaults.targets')"/>
+  
   <ItemGroup>
     
     <!-- Core -->

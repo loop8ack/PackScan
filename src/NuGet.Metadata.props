@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Loop8ack</Authors>
     <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/loop8ack/PackageTools</RepositoryUrl>
+    <RepositoryUrl>https://github.com/loop8ack/PackScan</RepositoryUrl>
     <PackageId>$(MsBuildProjectName)</PackageId>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageTags>msbuild;package;generator</PackageTags>

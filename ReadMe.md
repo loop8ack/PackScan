@@ -1,6 +1,9 @@
-[![Nuget](https://img.shields.io/nuget/v/PackScan.Tool?label=PackScan.Tool)](https://www.nuget.org/packages/PackScan.Tool)</br>
-[![Nuget](https://img.shields.io/nuget/v/PackScan.Analyzer?label=PackScan.Analyzer)](https://www.nuget.org/packages/PackScan.Analyzer)</br>
-[![Nuget](https://img.shields.io/nuget/v/PackScan.PackagesProvider.Abstractions?label=PackScan.PackagesProvider.Abstractions)](https://www.nuget.org/packages/PackScan.PackagesProvider.Abstractions)</br>
+[![Nuget](https://img.shields.io/nuget/v/PackScan.Tool?label=PackScan.Tool)](https://www.nuget.org/packages/PackScan.Tool)
+
+[![Nuget](https://img.shields.io/nuget/v/PackScan.Analyzer?label=PackScan.Analyzer)](https://www.nuget.org/packages/PackScan.Analyzer)
+
+[![Nuget](https://img.shields.io/nuget/v/PackScan.PackagesProvider.Abstractions?label=PackScan.PackagesProvider.Abstractions)](https://www.nuget.org/packages/PackScan.PackagesProvider.Abstractions)
+
 [![Nuget](https://img.shields.io/nuget/v/PackScan.Defaults?label=PackScan.Defaults)](https://www.nuget.org/packages/PackScan.Defaults)
 
 # Package Data Retrieval & License Analyzer

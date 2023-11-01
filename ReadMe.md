@@ -6,6 +6,23 @@
 
 [![Nuget](https://img.shields.io/nuget/v/PackScan.Defaults?label=PackScan.Defaults)](https://www.nuget.org/packages/PackScan.Defaults)
 
+1. [Overview](#package-data-retrieval--license-analyzer)
+   - [PackScan.Tool](#packscantool)
+   - [PackScan.Analyzer](#packscananalyzer)
+2. [Installation](#installation)
+   - [Analyzer](#analyzer)
+   - [.NET Tool](#net-tool)
+3. [Generated Result](#generated-result)
+4. [Configuration](#configuration)
+   - [Samples](#samples)
+   - [Analyzer](#analyzer-1)
+   - [.NET Tool](#net-tool-1)
+   - [Enums](#enums)
+5. [Future?](#future)
+6. [Contributing](#contributing)
+7. [ChangeLog](#changelog)
+8. [License](#license)
+
 # Package Data Retrieval & License Analyzer
 
 This project provides tools for retrieving information about installed packages and their dependencies within your code.
@@ -16,6 +33,7 @@ Additionally, these tools offer optional configurations to generate code that pr
 You can include these additional resources based on your specific needs.
 
 Currently, the project only supports C#, but it is designed in a way that allows for future support of VB.NET or F#.
+
 
 ### Key Features
 
@@ -331,6 +349,16 @@ Thank you for your support!
 Contributions are welcome! If you have any suggestions, ideas, or bug reports, please open an issue.
 
 If you would like to contribute code, please fork the repository and create a pull request with your changes.
+
+# ChangeLog
+
+## [v0.2.0 - 2023-11-01](https://github.com/loop8ack/PackScan/releases/tag/v0.2.0)
+### Added
+- New configuration option allowing content to be loaded from files only if no URL is provided and vice versa.
+
+## [v0.1.1 - 2023-10-31](https://github.com/loop8ack/PackScan/releases/tag/v0.1.1)
+### Added
+- Initial release of PackScan.
 
 # License
 

@@ -312,6 +312,8 @@ However, loading the data can be slow. You can specify how the data should be lo
 - `PreferFile`: Preferentially load the file content if a file is specified. If no file is specified, search for a URL.
 - `OnlyUrl`: Load only the content of the file. Do not load website content.
 - `OnlyFile`: Load only the content of the website. Do not load file content.
+- `FileIfHasNoUrl`: Load the content only from a URL if no file was provided in the package.
+- `UrlIfHasNoFile`: Load the content only from a file if no URL was provided in the package.
 
 # Future?
 

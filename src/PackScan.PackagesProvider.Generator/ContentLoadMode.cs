@@ -28,5 +28,15 @@ public enum ContentLoadMode
     /// <summary>
     /// Load content only from a file.
     /// </summary>
-    OnlyFile
+    OnlyFile,
+
+    /// <summary>
+    /// Load the content only from a URL if no file was provided in the package.
+    /// </summary>
+    UrlIfHasNoFile,
+
+    /// <summary>
+    /// Load the content only from a file if no URL was provided in the package.
+    /// </summary>
+    FileIfHasNoUrl,
 }

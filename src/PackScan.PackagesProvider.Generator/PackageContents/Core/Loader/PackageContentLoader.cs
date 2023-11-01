@@ -54,6 +54,16 @@ internal abstract class PackageContentLoader<TContent, TType> : IPackageContentL
                 return TryDownload(contentData.Url, cancellationToken)
                     ?? TryReadFile(contentData.FilePath, cancellationToken);
 
+            case ContentLoadMode.FileIfHasNoUrl:
+                return !HasUrl(contentData.Url)
+                    ? TryReadFile(contentData.FilePath, cancellationToken)
+                    : null;
+
+            case ContentLoadMode.UrlIfHasNoFile:
+                return !HasFile(contentData.FilePath)
+                    ? TryDownload(contentData.Url, cancellationToken)
+                    : null;
+
             default:
             case ContentLoadMode.None:
                 return null;
@@ -62,10 +72,7 @@ internal abstract class PackageContentLoader<TContent, TType> : IPackageContentL
 
     private IPackageContent<TContent, TType>? TryReadFile(string? filePath, CancellationToken cancellationToken)
     {
-        if (filePath is null or { Length: 0 })
-            return null;
-
-        if (!File.Exists(filePath))
+        if (!HasFile(filePath))
             return null;
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -74,11 +81,16 @@ internal abstract class PackageContentLoader<TContent, TType> : IPackageContentL
 
         return AddFileAndCreateContent(filePath, type);
     }
+    private static bool HasFile([NotNullWhen(true)] string? filePath)
+    {
+        return filePath?.Length > 0
+            && File.Exists(filePath);
+    }
 
     [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Since the rest of the project is synchronous, so is this method. Unfortunately there is no synchronous download implementation.")]
     private IPackageContent<TContent, TType>? TryDownload(Uri? url, CancellationToken cancellationToken)
     {
-        if (url is null)
+        if (!HasUrl(url))
             return null;
 
         SynchronizationContext syncContext = SynchronizationContext.Current;
@@ -97,6 +109,10 @@ internal abstract class PackageContentLoader<TContent, TType> : IPackageContentL
         {
             SynchronizationContext.SetSynchronizationContext(syncContext);
         }
+    }
+    private static bool HasUrl([NotNullWhen(true)] Uri? url)
+    {
+        return url is not null;
     }
     [SuppressMessage("Usage", "VSTHRD012:Provide JoinableTaskFactory where allowed", Justification = "AsyncLazy is only needed as a thread-safe cache and since the rest of the project is synchronous, it is not used here")]
     private async Task<IPackageContent<TContent, TType>?> TryDownloadWithCacheAsync(Uri url, CancellationToken cancellationToken)

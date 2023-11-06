@@ -352,6 +352,10 @@ If you would like to contribute code, please fork the repository and create a pu
 
 # ChangeLog
 
+## [v0.2.1 - 2023-11-06](https://github.com/loop8ack/PackScan/releases/tag/v0.2.1)
+### Fixed
+- Resolved a bug that caused issues with specific platform versions, such as those used in MAUI projects.
+
 ## [v0.2.0 - 2023-11-01](https://github.com/loop8ack/PackScan/releases/tag/v0.2.0)
 ### Added
 - New configuration option allowing content to be loaded from files only if no URL is provided and vice versa.

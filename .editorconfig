@@ -270,3 +270,9 @@ dotnet_diagnostic.CA2016.severity = warning
 
 # IDE0047: Remove unnecessary parentheses
 dotnet_diagnostic.IDE0047.severity = none
+
+# IDE0028: Collection initialization can be simplified
+dotnet_diagnostic.IDE0028.severity = none
+
+# IDE0290: Use primary constructor
+dotnet_diagnostic.IDE0290.severity = none

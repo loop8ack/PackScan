@@ -43,8 +43,6 @@ internal sealed class PackageDataReaderService
             ? FromIntermediateOutput(ProjectDirectory, BaseIntermediateOutputPath)
             : new AssetsFilePath(AssetsFilePath.Value);
 
-        IEnumerable<KnownPackageId> knownPackageIds = ParseKnownPackageIds(KnownPackageIds.Value).ToArray();
-
         IPackageDataReader reader = new PackageDataReader(assetsFilePath, TargetFramework, RuntimeIdentifier)
         {
             KnownPackageIds = ParseKnownPackageIds(KnownPackageIds.Value).ToArray()

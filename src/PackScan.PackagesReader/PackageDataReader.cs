@@ -23,12 +23,12 @@ public sealed class PackageDataReader : IPackageDataReader
     public AssetsFilePath AssetsFilePath { get; }
 
     /// <summary>
-    /// Gets the target framework of the package.
+    /// Gets the target framework of the project.
     /// </summary>
     public string TargetFramework { get; }
 
     /// <summary>
-    /// Gets the runtime identifier of the package (optional).
+    /// Gets the runtime identifier of the project (optional).
     /// </summary>
     public string? RuntimeIdentifier { get; }
 
@@ -41,9 +41,8 @@ public sealed class PackageDataReader : IPackageDataReader
     /// Initializes a new instance of the <see cref="PackageDataReader"/> class.
     /// </summary>
     /// <param name="assetsFilePath">The file path of the project assets file.</param>
-    /// <param name="targetFramework">The target framework of the package.</param>
-    /// <param name="runtimeIdentifier">The runtime identifier of the package (optional).</param>
-    /// <param name="knownPackageIds">Represents a collection of known package IDs and their associated owners or products (optional).</param>
+    /// <param name="targetFramework">The target framework of the project.</param>
+    /// <param name="runtimeIdentifier">The runtime identifier of the project (optional).</param>
     public PackageDataReader(string assetsFilePath, string targetFramework, string? runtimeIdentifier)
         : this(new AssetsFilePath(assetsFilePath), targetFramework, runtimeIdentifier)
     {
@@ -53,9 +52,8 @@ public sealed class PackageDataReader : IPackageDataReader
     /// Initializes a new instance of the <see cref="PackageDataReader"/> class.
     /// </summary>
     /// <param name="assetsFilePath">The file path of the project assets file.</param>
-    /// <param name="targetFramework">The target framework of the package.</param>
-    /// <param name="runtimeIdentifier">The runtime identifier of the package (optional).</param>
-    /// <param name="knownPackageIds">Represents a collection of known package IDs and their associated owners or products (optional).</param>
+    /// <param name="targetFramework">The target framework of the project.</param>
+    /// <param name="runtimeIdentifier">The runtime identifier of the project (optional).</param>
     public PackageDataReader(AssetsFilePath assetsFilePath, string targetFramework, string? runtimeIdentifier)
     {
         ThrowHelper.ThrowIfNullOrEmpty(targetFramework);
@@ -74,14 +72,16 @@ public sealed class PackageDataReader : IPackageDataReader
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        NuGetFramework framework = NuGetFramework.Parse(TargetFramework);
         LockFile lockFile = AssetsFilePath.ReadLockFile();
+
+        NuGetFramework framework = GetFramework(lockFile, TargetFramework)
+            ?? throw new InvalidOperationException($"No target framework was found for the alias '{TargetFramework}'.");
 
         IList<LibraryDependency> projectDependencies = lockFile.PackageSpec
             .GetTargetFramework(framework)
             .Dependencies;
 
-        LockFileTarget? target = TryGetTarget(lockFile, framework)
+        LockFileTarget? target = TryGetTarget(lockFile, framework, RuntimeIdentifier)
             ?? throw new InvalidOperationException($"No target was found for the target framework '{TargetFramework}' and the runtime id '{RuntimeIdentifier}'.");
 
         List<IPackageData> result = new();
@@ -121,11 +121,18 @@ public sealed class PackageDataReader : IPackageDataReader
 
         return result;
 
-        LockFileTarget TryGetTarget(LockFile lockFile, NuGetFramework framework)
+        static NuGetFramework? GetFramework(LockFile lockFile, string targetFramework)
         {
-            return string.IsNullOrEmpty(RuntimeIdentifier)
+            return lockFile.PackageSpec.TargetFrameworks
+                .FirstOrDefault(tfi => tfi.TargetAlias.Equals(targetFramework, StringComparison.OrdinalIgnoreCase))
+                ?.FrameworkName;
+        }
+
+        static LockFileTarget TryGetTarget(LockFile lockFile, NuGetFramework framework, string? runtimeIdentifier)
+        {
+            return string.IsNullOrEmpty(runtimeIdentifier)
                 ? lockFile.GetTarget(framework, null)
-                : lockFile.GetTarget(framework, RuntimeIdentifier)
+                : lockFile.GetTarget(framework, runtimeIdentifier)
                     ?? lockFile.GetTarget(framework, null);
         }
     }

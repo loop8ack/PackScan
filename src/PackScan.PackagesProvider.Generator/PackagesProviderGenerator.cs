@@ -65,14 +65,19 @@ public sealed class PackagesProviderGenerator
             ? Path.Combine(Path.GetTempPath(), "PackScan.PackagesProvider.Writer", "DownloadCache")
             : Environment.ExpandEnvironmentVariables(DownloadCacheFolder);
 
-        PackageContentLoaderFactory contentLoaderFactory = new(filesManager, httpClientFactory, downloadCacheFolderPath);
-
-        PackageContentManager contentManager = new(contentLoaderFactory)
+        PackageContentManager contentManager = new()
         {
             IconLoadMode = IconContentLoadMode,
+            IconContentLoader = new PackageImageContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath),
+
             LicenseLoadMode = LicenseContentLoadMode,
+            LicenseContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath),
+
             ReadMeLoadMode = ReadMeContentLoadMode,
+            ReleaseNotesContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath),
+
             ReleaseNotesLoadMode = ReleaseNotesContentLoadMode,
+            ReadMeContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath),
         };
 
         contentManager.LoadAll(packagesData, LoadContentParallel, cancellationToken);

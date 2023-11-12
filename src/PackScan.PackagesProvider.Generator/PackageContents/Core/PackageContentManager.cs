@@ -6,14 +6,17 @@ namespace PackScan.PackagesProvider.Generator.PackageContents.Core;
 
 internal sealed class PackageContentManager : IPackageContentManager
 {
-    private readonly IPackageContentLoader<byte[], ImageType> _imageContentFileProvider;
-    private readonly IPackageContentLoader<string, TextType> _textContentFileProvider;
     private IReadOnlyDictionary<string, PackageContents>? _contentsByPackageId;
 
     public required ContentLoadMode IconLoadMode { get; init; }
     public required ContentLoadMode LicenseLoadMode { get; init; }
     public required ContentLoadMode ReadMeLoadMode { get; init; }
     public required ContentLoadMode ReleaseNotesLoadMode { get; init; }
+
+    public required IPackageContentLoader<byte[], ImageType> IconContentLoader { get; init; }
+    public required IPackageContentLoader<string, TextType> LicenseContentLoader { get; init; }
+    public required IPackageContentLoader<string, TextType> ReadMeContentLoader { get; init; }
+    public required IPackageContentLoader<string, TextType> ReleaseNotesContentLoader { get; init; }
 
     public bool HasImageFiles
     {
@@ -61,12 +64,6 @@ internal sealed class PackageContentManager : IPackageContentManager
         }
     }
 
-    public PackageContentManager(IPackageContentLoaderFactory contentLoaderFactory)
-    {
-        _imageContentFileProvider = contentLoaderFactory.CreateImageLoader();
-        _textContentFileProvider = contentLoaderFactory.CreateTextLoader();
-    }
-
     public void LoadAll(IReadOnlyCollection<IPackageData> packages, bool parallel, CancellationToken cancellationToken)
     {
         _contentsByPackageId = parallel
@@ -112,10 +109,10 @@ internal sealed class PackageContentManager : IPackageContentManager
     {
         PackageContents contents = new()
         {
-            Icon = _imageContentFileProvider.TryLoad(IconLoadMode, package.Icon, cancellationToken),
-            License = _textContentFileProvider.TryLoad(LicenseLoadMode, package.License, cancellationToken),
-            ReadMe = _textContentFileProvider.TryLoad(ReadMeLoadMode, package.ReadMe, cancellationToken),
-            ReleaseNotes = _textContentFileProvider.TryLoad(ReleaseNotesLoadMode, package.ReleaseNotes, cancellationToken),
+            Icon = IconContentLoader.TryLoad(IconLoadMode, package.Icon, cancellationToken),
+            License = LicenseContentLoader.TryLoad(LicenseLoadMode, package.License, cancellationToken),
+            ReadMe = ReadMeContentLoader.TryLoad(ReadMeLoadMode, package.ReadMe, cancellationToken),
+            ReleaseNotes = ReleaseNotesContentLoader.TryLoad(ReleaseNotesLoadMode, package.ReleaseNotes, cancellationToken),
         };
 
         RenameFileToPackageId(FileExtensionMappings.ExtensionByImageType, package.Id, contents.Icon, "Icon", ".img");

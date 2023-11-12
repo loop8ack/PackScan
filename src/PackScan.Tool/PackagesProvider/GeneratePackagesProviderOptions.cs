@@ -2,6 +2,8 @@ using System.CommandLine;
 
 using PackScan.PackagesProvider.Generator;
 
+using SixLabors.ImageSharp;
+
 using ContentWriteModeEnum = PackScan.PackagesProvider.Generator.ContentWriteMode;
 using LanguageEnum = PackScan.PackagesProvider.Generator.Language;
 
@@ -19,6 +21,16 @@ internal static class GeneratePackagesProviderOptions
         foreach (Option option in options)
             command.Add(option);
     }
+
+    public static Option<string?> TargetFramework { get; } = new(new[] { "-f", "--target-framework" }, () => "", """
+        Specifies the target framework for the project.
+        """
+    );
+
+    public static Option<string?> RuntimeIdentifier { get; } = new(new[] { "-ri", "--runtime-identifier" }, () => "", """
+        Defines the runtime identifier for the project.
+        """
+    );
 
     public static Option<string> ProjectPath { get; } = new(new[] { "-p", "--project-path" }, () => ".", """
         The path to the project file or the folder containing the project file.
@@ -99,6 +111,12 @@ internal static class GeneratePackagesProviderOptions
 
     public static Option<ContentLoadMode?> IconContentLoadMode { get; } = new("--icon-load-mode", $"""
         Determines if and from where the icon should be loaded.
+        """
+    )
+    { IsRequired = false };
+
+    public static Option<Size?> IconContentMaxSize { get; } = new("--icon-max-size", $"""
+        Specifies the maximum size to which the icon should be resized.
         """
     )
     { IsRequired = false };

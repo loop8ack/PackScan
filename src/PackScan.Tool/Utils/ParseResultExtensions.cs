@@ -5,12 +5,22 @@ namespace PackScan.Tool.Utils;
 
 internal static class ParseResultExtensions
 {
-    public static bool TryGetOptionValueIfSpecified<T>(this ParseResult parseResult, Option<T> option, out T? value)
+    public static bool TryGetOptionValueIfSpecified<T>(this ParseResult parseResult, Option<T> option, TryParse<T>? tryParse, out T? value)
     {
         if (!IsSpecified(parseResult, option))
         {
             value = default;
             return false;
+        }
+
+        if (tryParse is not null)
+        {
+            string? optionValue = parseResult
+                .FindResultFor(option)
+                ?.GetValueOrDefault<string?>();
+
+            if (optionValue != null && tryParse(optionValue, out value))
+                return true;
         }
 
         value = parseResult.GetValueForOption(option);

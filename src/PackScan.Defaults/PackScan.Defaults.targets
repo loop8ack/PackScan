@@ -85,6 +85,9 @@
         <PackagesProviderReleaseNotesContentLoadMode Condition="'$(PackagesProviderReleaseNotesContentLoadMode)' == ''">$(PackagesProviderContentLoadMode)</PackagesProviderReleaseNotesContentLoadMode>
         <PackagesProviderReleaseNotesContentLoadMode Condition="'$(PackagesProviderReleaseNotesContentLoadMode)' == ''">None</PackagesProviderReleaseNotesContentLoadMode>
     
+        <!-- Icon content max size -->
+        <PackagesProviderIconContentMaxSize Condition="'$(PackagesProviderIconContentMaxSize)' == ''">32x32</PackagesProviderIconContentMaxSize>
+        
       </PropertyGroup>
 
       <!-- Generator tool configuration -->

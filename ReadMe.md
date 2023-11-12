@@ -240,6 +240,10 @@ Default value: `None`
 Determines if and from where the release notes should be loaded. [Here](#content-load-mode), you will find the supported values.</br>
 Default value: `None`</br>
 
+- **PackagesProviderIconContentMaxSize**</br>
+Specifies the maximum size in "\<width>x\<height>" format to which the icon should be resized.</br>
+Default value: `512x512`</br>
+
 ### Project Items
 
 - **AllowedLicense**</br>
@@ -291,7 +295,9 @@ Default value: `%temp%/PackScan.PackagesProvider.Writer/DownloadCache`
 
 ### CLI Parameters
 
-- **-p, --project-path** | The path to the project folder or project file. Default value: The current working directory
+- **-f, --target-framework** | Specifies the target framework for the project. Default value: The current target framework of the project.
+- **-ri, --runtime-identifier** | Defines the runtime identifier for the project. Default value: The current runtime identifier of the project.
+- **-p, --project-path** | The path to the project folder or project file. Default value: The current working directory.
 - **-l, --language** | Sets the programming language to be used. Default value: The language based on the project file extension.
 - **--clear-output** | Determines whether the output folder should be emptied before execution (true) or not (false). Default value: `false`
 - **-o, --output** | Overrides the project property **PackagesProviderOutputPath**.
@@ -304,6 +310,7 @@ Default value: `%temp%/PackScan.PackagesProvider.Writer/DownloadCache`
 - **--add-project-file** | Overrides the project property **PackagesProviderGenerateProjectFile**.
 - **--load-mode** | Overwrites the default values of the following load-mode values. [Here](#content-load-mode), you will find the supported values. Default value: \<empty>
 - **--icon-load-mode** | Overrides the project property **PackagesProviderIconContentLoadMode**.
+- **--icon-max-size** | Specifies the maximum size in "\<width>x\<height>" format to which the icon should be resized.
 - **--license-load-mode** | Overrides the project property **PackagesProviderLicenseContentLoadMode**.
 - **--readme-load-mode** | Overrides the project property **PackagesProviderReadMeContentLoadMode**.
 - **--release-notes-load-mode** | Overrides the project property **PackagesProviderReleaseNotesContentLoadMode**.
@@ -351,6 +358,12 @@ Contributions are welcome! If you have any suggestions, ideas, or bug reports, p
 If you would like to contribute code, please fork the repository and create a pull request with your changes.
 
 # ChangeLog
+
+## [v0.3.0 - 2023-11-13](https://github.com/loop8ack/PackScan/releases/tag/v0.3.0)
+### Added
+- PackScan.Tool parameter to specify the target framework for the project.
+- PackScan.Tool parameter to define the runtime identifier for the project.
+- Functionality to specify the maximum size for downloaded icons in "<width>x<height>" format.
 
 ## [v0.2.1 - 2023-11-06](https://github.com/loop8ack/PackScan/releases/tag/v0.2.1)
 ### Fixed

@@ -8,6 +8,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>packscan</ToolCommandName>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DefineConstants>$(DefineConstants);PackScan_Tool</DefineConstants>
     
     <PackagesProviderOutputPath>_debug/result</PackagesProviderOutputPath>
     <PackagesProviderContentLoadMode>PreferUrl</PackagesProviderContentLoadMode>
@@ -29,6 +30,8 @@
     <ProjectReference Include="..\PackScan.PackagesProvider.Generator\PackScan.PackagesProvider.Generator.csproj" />
     <ProjectReference Include="..\PackScan.PackagesReader\PackScan.PackagesReader.csproj" />
   </ItemGroup>
+
+  <Import Project="..\PackScan.Shared\PackScan.Shared.projitems" Label="Shared" />
 
   <Import Project="../PackScan.Defaults/PackScan.Defaults.targets" />
 

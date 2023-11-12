@@ -15,16 +15,17 @@
   <!-- Analyzer configuration -->
   <PropertyGroup>
     <AllowEmptyLicenses>true</AllowEmptyLicenses>
+    <PackagesProviderContentLoadMode>PreferFile</PackagesProviderContentLoadMode>
     <AllowedLicensesAnalyzationEnabled>True</AllowedLicensesAnalyzationEnabled>
     <PackagesProviderLoadContentsParallel Condition="'$(Configuration)' == 'Debug'">False</PackagesProviderLoadContentsParallel>
   </PropertyGroup>
 
-    <!-- Global usings -->  
+  <!-- Global usings -->
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
-    <!-- XUnit packages -->  
+  <!-- XUnit packages -->
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.5.0" />
     <PackageReference Include="xunit.core" Version="2.5.0" />

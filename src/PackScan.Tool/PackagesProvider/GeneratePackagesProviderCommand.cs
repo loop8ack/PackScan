@@ -13,6 +13,8 @@ using PackScan.PackagesReader;
 using PackScan.PackagesReader.Abstractions;
 using PackScan.Tool.Utils;
 
+using SixLabors.ImageSharp;
+
 using Options = PackScan.Tool.PackagesProvider.GeneratePackagesProviderOptions;
 
 namespace PackScan.Tool.PackagesProvider;
@@ -39,7 +41,7 @@ internal static class GeneratePackagesProviderCommand
         (Project project, string projectFilePath) = GetProject(context.ParseResult);
         (string outputFolderPath, bool clearOutputFolder) = GetOutputFolderConfigurations(context, project, projectFilePath);
 
-        IReadOnlyCollection<IPackageData> packageData = CreatePackageDataReader(project, projectFilePath).Read(context.GetCancellationToken());
+        IReadOnlyCollection<IPackageData> packageData = CreatePackageDataReader(context.ParseResult, project, projectFilePath).Read(context.GetCancellationToken());
         IPackagesProviderFiles files = CreatePackagesProviderGeneratorOptions(context.ParseResult, project, projectFilePath).WriteCode(packageData, context.GetCancellationToken());
 
         if (clearOutputFolder)
@@ -112,10 +114,11 @@ internal static class GeneratePackagesProviderCommand
         return result;
     }
 
-    private static PackageDataReader CreatePackageDataReader(Project project, string projectFilePath)
+    private static PackageDataReader CreatePackageDataReader(ParseResult parseResult, Project project, string projectFilePath)
     {
-        string targetFramework = project.GetPropertyValue("TargetFramework");
-        string runtimeIdentifier = project.GetPropertyValue("RuntimeIdentifier");
+        (parseResult, project).TryGetOptionOrPropertyValue(Options.TargetFramework, "TargetFramework", out string? targetFramework);
+        (parseResult, project).TryGetOptionOrPropertyValue(Options.RuntimeIdentifier, "RuntimeIdentifier", out string? runtimeIdentifier);
+
         string baseIntermediateOutput = project.GetPropertyValue("BaseIntermediateOutputPath").Replace('\\', '/');
 
         AssetsFilePath assetsFilePath = AssetsFilePath
@@ -143,7 +146,7 @@ internal static class GeneratePackagesProviderCommand
             ProductInfoProvider = new AssemblyProductInfoProvider(Assembly.GetExecutingAssembly())
         };
 
-        if (parseResult.TryGetOptionValueIfSpecified(Options.Language, out Language? language) && language is not null)
+        if (parseResult.TryGetOptionValueIfSpecified(Options.Language, tryParse: null, out Language? language) && language is not null)
             generator.Language = language.Value;
         else
         {
@@ -184,6 +187,9 @@ internal static class GeneratePackagesProviderCommand
 
         if ((parseResult, project).TryGetOptionOrPropertyValue(Options.IconContentLoadMode, Options.ContentLoadMode, "PackagesProviderIconContentLoadMode", out ContentLoadMode? iconContentLoadMode) && iconContentLoadMode is not null)
             generator.IconContentLoadMode = iconContentLoadMode.Value;
+
+        if ((parseResult, project).TryGetOptionOrPropertyValue(Options.IconContentMaxSize, "PackagesProviderIconContentMaxSize", out Size? iconContentMaxSize))
+            generator.IconContentMaxSize = iconContentMaxSize;
 
         if ((parseResult, project).TryGetOptionOrPropertyValue(Options.LicenseContentLoadMode, Options.ContentLoadMode, "PackagesProviderLicenseContentLoadMode", out ContentLoadMode? licenseContentLoadMode) && licenseContentLoadMode is not null)
             generator.LicenseContentLoadMode = licenseContentLoadMode.Value;
@@ -226,49 +232,75 @@ internal static class GeneratePackagesProviderCommand
 
 file static class Extensions
 {
+    public static bool TryGetOptionOrPropertyValue(this (ParseResult parseResult, Project project) parseResultAndProject, Option<Size?> option, string propertyName, [MaybeNull] out Size? value)
+        => TryGetOptionOrPropertyValue(parseResultAndProject, option, propertyName, PackScan.Utils.TryParseImageSharpSize, out value);
+
     public static bool TryGetOptionOrPropertyValue<T>(this (ParseResult parseResult, Project project) parseResultAndProject, Option<T> option, string propertyName, [MaybeNull] out T value)
+        => TryGetOptionOrPropertyValue(parseResultAndProject, option, propertyName, tryParse: null, out value);
+    public static bool TryGetOptionOrPropertyValue<T>(this (ParseResult parseResult, Project project) parseResultAndProject, Option<T> option, string propertyName, TryParse<T>? tryParse, [MaybeNull] out T value)
     {
         (ParseResult parseResult, Project project) = parseResultAndProject;
 
-        if (parseResult.TryGetOptionValueIfSpecified(option, out value))
+        if (parseResult.TryGetOptionValueIfSpecified(option, tryParse, out value))
             return true;
 
-        bool success = TryGetPropertyValue(project, propertyName, typeof(T), out object? obj);
-        value = (T)obj!;
-        return success;
+        return TryGetPropertyValue<T>(project, propertyName, tryParse, out value);
     }
 
     public static bool TryGetOptionOrPropertyValue<T>(this (ParseResult parseResult, Project project) parseResultAndProject, Option<T> option, Option<T> alternativeOption, string propertyName, [MaybeNull] out T value)
+        => TryGetOptionOrPropertyValue(parseResultAndProject, option, alternativeOption, propertyName, tryParse: null, out value);
+    public static bool TryGetOptionOrPropertyValue<T>(this (ParseResult parseResult, Project project) parseResultAndProject, Option<T> option, Option<T> alternativeOption, string propertyName, TryParse<T>? tryParse, [MaybeNull] out T value)
     {
         (ParseResult parseResult, Project project) = parseResultAndProject;
 
-        if (parseResult.TryGetOptionValueIfSpecified(option, out value))
+        if (parseResult.TryGetOptionValueIfSpecified(option, tryParse, out value))
             return true;
 
-        if (parseResult.TryGetOptionValueIfSpecified(alternativeOption, out value))
+        if (parseResult.TryGetOptionValueIfSpecified(alternativeOption, tryParse, out value))
             return true;
 
-        bool success = TryGetPropertyValue(project, propertyName, typeof(T), out object? obj);
-        value = (T)obj!;
-        return success;
+        return TryGetPropertyValue(project, propertyName, tryParse, out value);
     }
 
-    private static bool TryGetPropertyValue(Project project, string propertyName, Type type, [MaybeNull] out object value)
+    private static bool TryGetPropertyValue<T>(Project project, string propertyName, TryParse<T>? tryParse, [MaybeNull] out T value)
     {
         string s = project.GetPropertyValue(propertyName);
 
         if (s is null)
         {
-            value = null;
+            value = default;
             return false;
         }
 
+        if (tryParse?.Invoke(s, out value) == true)
+            return true;
+
+        if (TryConvert(s, typeof(T), out object? obj))
+        {
+            value = (T)obj!;
+            return true;
+        }
+
+        value = default;
+        return false;
+    }
+
+    private static bool TryConvert(string s, Type type, [MaybeNull] out object value)
+    {
         type = Nullable.GetUnderlyingType(type) ?? type;
 
         if (type.IsEnum)
             return Enum.TryParse(type, s, out value);
 
-        value = Convert.ChangeType(s, type);
-        return true;
+        try
+        {
+            value = Convert.ChangeType(s, type);
+            return true;
+        }
+        catch
+        {
+            value = null;
+            return false;
+        }
     }
 }

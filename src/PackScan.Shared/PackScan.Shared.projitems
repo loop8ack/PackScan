@@ -13,5 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)System.Runtime.CompilerServices\CompilerFeatureRequiredAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System.Runtime.CompilerServices\RequiredMemberAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ThrowHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
   </ItemGroup>
 </Project>

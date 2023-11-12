@@ -25,7 +25,7 @@ public sealed class PackageDataReader : IPackageDataReader
     /// <summary>
     /// Gets the target framework of the project.
     /// </summary>
-    public string TargetFramework { get; }
+    public string? TargetFramework { get; }
 
     /// <summary>
     /// Gets the runtime identifier of the project (optional).
@@ -43,7 +43,7 @@ public sealed class PackageDataReader : IPackageDataReader
     /// <param name="assetsFilePath">The file path of the project assets file.</param>
     /// <param name="targetFramework">The target framework of the project.</param>
     /// <param name="runtimeIdentifier">The runtime identifier of the project (optional).</param>
-    public PackageDataReader(string assetsFilePath, string targetFramework, string? runtimeIdentifier)
+    public PackageDataReader(string assetsFilePath, string? targetFramework, string? runtimeIdentifier)
         : this(new AssetsFilePath(assetsFilePath), targetFramework, runtimeIdentifier)
     {
     }
@@ -54,7 +54,7 @@ public sealed class PackageDataReader : IPackageDataReader
     /// <param name="assetsFilePath">The file path of the project assets file.</param>
     /// <param name="targetFramework">The target framework of the project.</param>
     /// <param name="runtimeIdentifier">The runtime identifier of the project (optional).</param>
-    public PackageDataReader(AssetsFilePath assetsFilePath, string targetFramework, string? runtimeIdentifier)
+    public PackageDataReader(AssetsFilePath assetsFilePath, string? targetFramework, string? runtimeIdentifier)
     {
         ThrowHelper.ThrowIfNullOrEmpty(targetFramework);
 
@@ -121,7 +121,7 @@ public sealed class PackageDataReader : IPackageDataReader
 
         return result;
 
-        static NuGetFramework? GetFramework(LockFile lockFile, string targetFramework)
+        static NuGetFramework? GetFramework(LockFile lockFile, string? targetFramework)
         {
             return lockFile.PackageSpec.TargetFrameworks
                 .FirstOrDefault(tfi => tfi.TargetAlias.Equals(targetFramework, StringComparison.OrdinalIgnoreCase))

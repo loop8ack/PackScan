@@ -1,5 +1,7 @@
 using Microsoft.CodeAnalysis.Diagnostics;
 
+using SixLabors.ImageSharp;
+
 namespace PackScan.Analyzer.Core.Options;
 
 internal static class AnalyzerConfigOptionsExtensions
@@ -47,6 +49,21 @@ internal static class AnalyzerConfigOptionsExtensions
         }
 
         return new(name, Diagnostics.OptionNotFound.Create(name));
+    }
+
+    public static OptionValue<Size?> GetOptionNullableSKSize(this AnalyzerConfigOptions options, string name)
+    {
+        if (options.TryGetValue(Prefix + name, out string? str))
+        {
+            if (string.IsNullOrEmpty(str))
+                return new(name, (Size?)null);
+
+            return Utils.TryParseImageSharpSize(str, out Size? value)
+                ? new(name, value)
+                : new(name, Diagnostics.OptionNotParsedSize.Create(name, str));
+        }
+
+        return new(name, (Size?)null);
     }
 
     public static OptionValue<TValue> GetOptionValue<TValue>(this AnalyzerConfigOptions options, string name, string typeName, IReadOnlyDictionary<string, TValue> valueMapping)

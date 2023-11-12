@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Text;
 
 using PackScan.PackagesProvider.Generator.Utils;
@@ -36,12 +37,10 @@ internal sealed class PackagesProviderFilesManager : IPackagesProviderFilesManag
         lock (_files)
             return _files.TryGetValue(fileName, out file);
     }
-    public IPackagesProviderFile AddContents(string fileName, string contents)
-        => AddFile(fileName, () => new FileContents(this, contents));
-    public IPackagesProviderFile AddPhysical(string physicalFilePath)
-        => AddFile(Path.GetFileName(physicalFilePath), () => new PhysicalFile(this, physicalFilePath));
-    public IPackagesProviderFile AddPhysical(string fileName, string physicalFilePath)
-        => AddFile(fileName, () => new PhysicalFile(this, physicalFilePath));
+    public IPackagesProviderFile AddContents(string fileName, string contents, IPackagesProviderFileModification? modification = null)
+        => AddFile(fileName, () => new FileContents(this, contents, modification));
+    public IPackagesProviderFile AddPhysical(string physicalFilePath, IPackagesProviderFileModification? modification = null)
+        => AddFile(Path.GetFileName(physicalFilePath), () => new PhysicalFile(this, physicalFilePath, modification));
     private IPackagesProviderFile AddFile(string fileName, Func<IPackagesProviderFile> createFile)
     {
         lock (_files)
@@ -159,39 +158,88 @@ internal sealed class PackagesProviderFilesManager : IPackagesProviderFilesManag
 
     private class FileContents : FileBase
     {
+        private readonly IPackagesProviderFileModification? _modification;
         private readonly string _contents;
 
-        public FileContents(PackagesProviderFilesManager manager, string contents)
+        public FileContents(PackagesProviderFilesManager manager, string contents, IPackagesProviderFileModification? modification)
             : base(manager)
-            => _contents = contents;
+        {
+            _modification = modification;
+            _contents = contents;
+        }
 
         public override void CopyTo(Stream output)
         {
             using (StreamWriter writer = new(output, Encoding.UTF8, 1024, true))
-                writer.Write(_contents);
+                writer.Write(ReadAllText());
         }
         public override string ReadAllText()
-            => _contents;
+        {
+            if (_modification?.TryModifyText(_contents, out var contents) == true)
+                return contents;
+
+            return _contents;
+        }
         public override byte[] ReadAllBytes()
-            => Encoding.UTF8.GetBytes(_contents);
+            => Encoding.UTF8.GetBytes(ReadAllText());
     }
 
     private class PhysicalFile : FileBase
     {
+        private readonly IPackagesProviderFileModification? _modification;
         private readonly string _filePath;
 
-        public PhysicalFile(PackagesProviderFilesManager manager, string filePath)
+        public PhysicalFile(PackagesProviderFilesManager manager, string filePath, IPackagesProviderFileModification? modification)
             : base(manager)
-            => _filePath = filePath;
+        {
+            _modification = modification;
+            _filePath = filePath;
+        }
 
         public override void CopyTo(Stream output)
         {
-            using (Stream stream = File.OpenRead(_filePath))
-                stream.CopyTo(output);
+            using (Stream fileStream = File.OpenRead(_filePath))
+            {
+                if (_modification is not null)
+                {
+                    bool success = _modification.TryModifyStream(fileStream, output);
+
+                    if (!success)
+                    {
+                        fileStream.Position = 0;
+                        output.Position = 0;
+
+                        fileStream.CopyTo(output);
+                    }
+                }
+                else
+                    fileStream.CopyTo(output);
+            }
         }
         public override string ReadAllText()
-            => File.ReadAllText(_filePath);
+        {
+            if (_modification is null)
+                return File.ReadAllText(_filePath);
+
+            MemoryStream memory = new();
+
+            CopyTo(memory);
+
+            memory.Position = 0;
+
+            using (StreamReader reader = new(memory))
+                return reader.ReadToEnd();
+        }
         public override byte[] ReadAllBytes()
-            => File.ReadAllBytes(_filePath);
+        {
+            if (_modification is null)
+                return File.ReadAllBytes(_filePath);
+
+            MemoryStream memory = new();
+
+            CopyTo(memory);
+
+            return memory.ToArray();
+        }
     }
 }

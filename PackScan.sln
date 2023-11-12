@@ -12,17 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		build.ps1 = build.ps1
 		Directory.Build.props = Directory.Build.props
 		global.json = global.json
 		LICENSE = LICENSE
 		nuget.config = nuget.config
-		pack.ps1 = pack.ps1
 		ReadMe.md = ReadMe.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{C20C1112-EF7A-48C1-9282-872163BBDFC4}"
-	ProjectSection(SolutionItems) = preProject
-		.config\dotnet-tools.json = .config\dotnet-tools.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B4BAADD5-BEF6-4D5B-9CB6-48C85D7D5D06}"
@@ -84,7 +79,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C20C1112-EF7A-48C1-9282-872163BBDFC4} = {40512514-8795-4C6A-A58F-6AFC87C17B2F}
 		{26685B24-B2D0-4C68-AE5F-230F9424DBF5} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
 		{6A110BE4-B6E9-48A6-BFEB-1E3F2E90B84D} = {F9F7EE5C-DD30-439B-ABB0-33947D2C833B}
 		{9E8281F2-EC4E-404E-8D3C-72759FEC6D62} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
@@ -99,6 +93,8 @@ Global
 		SolutionGuid = {BB925338-FA98-438B-919B-EB37667CC9A9}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\PackScan.Shared\PackScan.Shared.projitems*{19e1358b-9100-4905-ba7b-a38a6c29e723}*SharedItemsImports = 5
+		src\PackScan.Shared\PackScan.Shared.projitems*{26685b24-b2d0-4c68-ae5f-230f9424dbf5}*SharedItemsImports = 5
 		src\PackScan.Shared\PackScan.Shared.projitems*{51c5972d-550e-4123-98dd-4ed087e44c5f}*SharedItemsImports = 5
 		src\PackScan.Shared\PackScan.Shared.projitems*{8f2e4832-2a8e-46cb-98f8-3ece0f45cf3d}*SharedItemsImports = 5
 		src\PackScan.Shared\PackScan.Shared.projitems*{9e8281f2-ec4e-404e-8d3c-72759fec6d62}*SharedItemsImports = 13

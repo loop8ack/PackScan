@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\PackScan.Shared\PackScan.Shared.projitems" Label="Shared" />
+
   <Import Project="../NuGet.Metadata.props" />
 
   <PropertyGroup>
@@ -9,6 +11,7 @@
     <DevelopmentDependency>true</DevelopmentDependency>
     <IsRoslynComponent>true</IsRoslynComponent>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <DefineConstants>$(DefineConstants);PackScan_Analyzer</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

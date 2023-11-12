@@ -11,6 +11,8 @@ using PackScan.PackagesProvider.Generator.Files;
 using PackScan.PackagesProvider.Generator.Info;
 using PackScan.PackagesReader.Abstractions;
 
+using SixLabors.ImageSharp;
+
 using CodeGenerator = PackScan.PackagesProvider.Generator.PackagesProviderGenerator;
 
 namespace PackScan.Analyzer.Core.Services;
@@ -27,6 +29,7 @@ internal record class PackagesProviderGeneratorService
     private OptionValue<bool> NullableAnnotations { get; set; }
     private OptionValue<bool> LoadContentParallel { get; set; }
     private OptionValue<ContentLoadMode> IconContentLoadMode { get; set; }
+    private OptionValue<Size?> IconContentMaxSize { get; set; }
     private OptionValue<ContentLoadMode> LicenseContentLoadMode { get; set; }
     private OptionValue<ContentLoadMode> ReadMeContentLoadMode { get; set; }
     private OptionValue<ContentLoadMode> ReleaseNotesContentLoadMode { get; set; }
@@ -43,6 +46,7 @@ internal record class PackagesProviderGeneratorService
         NullableAnnotations = options.GetOptionBool("PackagesProviderNullableAnnotations");
         LoadContentParallel = options.GetOptionBool("PackagesProviderLoadContentsParallel");
         IconContentLoadMode = options.GetOptionEnum<ContentLoadMode>("PackagesProviderIconContentLoadMode");
+        IconContentMaxSize = options.GetOptionNullableSKSize("PackagesProviderIconContentMaxSize");
         LicenseContentLoadMode = options.GetOptionEnum<ContentLoadMode>("PackagesProviderLicenseContentLoadMode");
         ReadMeContentLoadMode = options.GetOptionEnum<ContentLoadMode>("PackagesProviderReadMeContentLoadMode");
         ReleaseNotesContentLoadMode = options.GetOptionEnum<ContentLoadMode>("PackagesProviderReleaseNotesContentLoadMode");
@@ -79,6 +83,7 @@ internal record class PackagesProviderGeneratorService
         NullableAnnotations.Validate(diagnostics);
         LoadContentParallel.Validate(diagnostics);
         IconContentLoadMode.Validate(diagnostics);
+        IconContentMaxSize.Validate(diagnostics);
         LicenseContentLoadMode.Validate(diagnostics);
         ReadMeContentLoadMode.Validate(diagnostics);
         ReleaseNotesContentLoadMode.Validate(diagnostics);
@@ -101,6 +106,7 @@ internal record class PackagesProviderGeneratorService
             GenerateProjectFile = false,
             ContentWriteMode = ContentWriteMode.InCode,
             IconContentLoadMode = IconContentLoadMode,
+            IconContentMaxSize = IconContentMaxSize,
             LicenseContentLoadMode = LicenseContentLoadMode,
             ReadMeContentLoadMode = ReadMeContentLoadMode,
             ReleaseNotesContentLoadMode = ReleaseNotesContentLoadMode,

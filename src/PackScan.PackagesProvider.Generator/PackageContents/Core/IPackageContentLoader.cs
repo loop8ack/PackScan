@@ -1,3 +1,4 @@
+using PackScan.PackagesProvider.Generator.Files;
 using PackScan.PackagesReader.Abstractions;
 
 namespace PackScan.PackagesProvider.Generator.PackageContents.Core;

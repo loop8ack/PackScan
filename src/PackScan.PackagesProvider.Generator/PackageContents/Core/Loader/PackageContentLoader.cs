@@ -22,15 +22,17 @@ internal abstract class PackageContentLoader<TContent, TType> : IPackageContentL
     private readonly IPackagesProviderFilesManager _filesManager;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly string _downloadCacheFolder;
+    private readonly IPackagesProviderFileModification? _modification;
 
     protected abstract IReadOnlyDictionary<string, TType> MimeTypeTypeMapping { get; }
     protected abstract IReadOnlyDictionary<string, TType> FileExtensionTypeMapping { get; }
 
-    protected PackageContentLoader(IPackagesProviderFilesManager filesManager, IHttpClientFactory httpClientFactory, string downloadCacheFolder)
+    protected PackageContentLoader(IPackagesProviderFilesManager filesManager, IHttpClientFactory httpClientFactory, string downloadCacheFolder, IPackagesProviderFileModification? modification)
     {
         _filesManager = filesManager;
         _httpClientFactory = httpClientFactory;
         _downloadCacheFolder = downloadCacheFolder;
+        _modification = modification;
     }
 
     public IPackageContent<TContent, TType>? TryLoad(ContentLoadMode loadMode, IPackageContentData? contentData, CancellationToken cancellationToken)
@@ -204,7 +206,7 @@ internal abstract class PackageContentLoader<TContent, TType> : IPackageContentL
 
     private IPackageContent<TContent, TType> AddFileAndCreateContent(string filePath, TType type)
     {
-        IPackagesProviderFile file = _filesManager.AddPhysical(filePath);
+        IPackagesProviderFile file = _filesManager.AddPhysical(filePath, _modification);
 
         return CreateContent(file, type);
     }

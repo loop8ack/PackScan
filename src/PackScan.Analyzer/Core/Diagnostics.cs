@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Drawing;
 
 using Microsoft.CodeAnalysis;
 
@@ -16,6 +17,7 @@ internal static class Diagnostics
         OptionNotParsedEnum,
         OptionNoParsedBool,
         OptionNoParsedValue,
+        OptionNoParsedSize,
 
         // Licenses Analyzer
         LicenseNotAllowed = 200,
@@ -108,6 +110,23 @@ internal static class Diagnostics
         public static Diagnostic Create(string optionName, string value, string typeName, IEnumerable<string> supportedValues)
         {
             return Diagnostic.Create(Descriptor, Location.None, optionName, value, typeName, string.Join(", ", supportedValues));
+        }
+    }
+
+    public static class OptionNotParsedSize
+    {
+        public static DiagnosticDescriptor Descriptor { get; }
+            = new DiagnosticDescriptor(
+                id: $"{Prefix}{(int)Id.OptionNoParsedSize:000}",
+                title: "Not supported value",
+                messageFormat: "Could not parse '{0}' value '{1}' as size. Supported format: <width>x<height>",
+                category: Category,
+                DiagnosticSeverity.Error,
+                isEnabledByDefault: true);
+
+        public static Diagnostic Create(string optionName, string value)
+        {
+            return Diagnostic.Create(Descriptor, Location.None, optionName, value);
         }
     }
 

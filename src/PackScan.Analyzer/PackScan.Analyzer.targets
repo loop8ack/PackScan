@@ -2,16 +2,16 @@
 
   <Import Project="$(MSBuildThisFileDirectory)\PackScan.Defaults.targets"
           Condition="Exists('$(MSBuildThisFileDirectory)\PackScan.Defaults.targets')"/>
-  
+
   <ItemGroup>
-    
+
     <!-- Core -->
     <CompilerVisibleProperty Include="Language" />
     <CompilerVisibleProperty Include="TargetFramework" />
     <CompilerVisibleProperty Include="RuntimeIdentifier" />
     <CompilerVisibleProperty Include="MSBuildProjectDirectory" />
     <CompilerVisibleProperty Include="BaseIntermediateOutputPath" />
-    
+
     <!-- Reader -->
     <CompilerVisibleProperty Include="_KnownPackageIds" />
 
@@ -36,7 +36,8 @@
     <CompilerVisibleProperty Include="PackagesProviderReleaseNotesContentLoadMode" />
     <CompilerVisibleProperty Include="PackagesProviderDownloadCacheFolder" />
     <CompilerVisibleProperty Include="PackagesProviderWorkingDirectory" />
+    <CompilerVisibleProperty Include="PackagesProviderIconContentMaxSize" />
 
   </ItemGroup>
-  
+
 </Project>

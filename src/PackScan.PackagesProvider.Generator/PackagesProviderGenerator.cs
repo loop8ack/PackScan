@@ -5,12 +5,15 @@ using PackScan.PackagesProvider.Generator.Code.CSharp;
 using PackScan.PackagesProvider.Generator.Code.Documentation;
 using PackScan.PackagesProvider.Generator.Files;
 using PackScan.PackagesProvider.Generator.Files.Core;
+using PackScan.PackagesProvider.Generator.Files.Modifications;
 using PackScan.PackagesProvider.Generator.Info;
 using PackScan.PackagesProvider.Generator.PackageContents;
 using PackScan.PackagesProvider.Generator.PackageContents.Core;
 using PackScan.PackagesProvider.Generator.PackageContents.Core.Loader;
 using PackScan.PackagesProvider.Generator.Utils;
 using PackScan.PackagesReader.Abstractions;
+
+using SixLabors.ImageSharp;
 
 namespace PackScan.PackagesProvider.Generator;
 
@@ -33,6 +36,7 @@ public sealed class PackagesProviderGenerator
     public IProductInfoProvider? ProductInfoProvider { get; set; }
     public ContentWriteMode ContentWriteMode { get; set; } = ContentWriteMode.Embed;
     public ContentLoadMode IconContentLoadMode { get; set; }
+    public Size? IconContentMaxSize { get; set; }
     public ContentLoadMode LicenseContentLoadMode { get; set; }
     public ContentLoadMode ReadMeContentLoadMode { get; set; }
     public ContentLoadMode ReleaseNotesContentLoadMode { get; set; }
@@ -65,19 +69,23 @@ public sealed class PackagesProviderGenerator
             ? Path.Combine(Path.GetTempPath(), "PackScan.PackagesProvider.Writer", "DownloadCache")
             : Environment.ExpandEnvironmentVariables(DownloadCacheFolder);
 
+        IPackagesProviderFileModification? iconContentModification = IconContentMaxSize is not null
+            ? new ReduceImageContentSizeModification(IconContentMaxSize.Value)
+            : null;
+
         PackageContentManager contentManager = new()
         {
             IconLoadMode = IconContentLoadMode,
-            IconContentLoader = new PackageImageContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath),
+            IconContentLoader = new PackageImageContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath, iconContentModification),
 
             LicenseLoadMode = LicenseContentLoadMode,
-            LicenseContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath),
+            LicenseContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath, modification: null),
 
             ReadMeLoadMode = ReadMeContentLoadMode,
-            ReleaseNotesContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath),
+            ReleaseNotesContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath, modification: null),
 
             ReleaseNotesLoadMode = ReleaseNotesContentLoadMode,
-            ReadMeContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath),
+            ReadMeContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath, modification: null),
         };
 
         contentManager.LoadAll(packagesData, LoadContentParallel, cancellationToken);

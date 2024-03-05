@@ -75,6 +75,8 @@ internal sealed class FormattableStringFactory
             sb.Append(typeName);
         else
         {
+            sb.Append("global::");
+
             if (_namespaceProvider.TryGetForWrite(type.Namespace, out string? ns))
             {
                 sb.Append(ns);

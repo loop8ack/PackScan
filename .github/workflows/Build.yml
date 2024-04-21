@@ -1,0 +1,100 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ "main" ]
+
+  workflow_call:
+    outputs:
+      version:
+        value: ${{ jobs.build.outputs.version }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        
+    - name: Get next version
+      id: version
+      uses: reecetech/version-increment@2023.10.2
+      
+    - name: Build
+      run: |
+        dotnet build -c Release -p:Version=${{ steps.version.outputs.version }}
+        
+    - name: Upload PackScan.PackagesProvider.Abstractions
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: PackScan.PackagesProvider.Abstractions.${{ steps.version.outputs.version }}.nupkg
+        path: artifacts/PackScan.PackagesProvider.Abstractions.${{ steps.version.outputs.version }}.nupkg
+        if-no-files-found: error
+
+    - name: Upload PackScan.Analyzer
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: PackScan.Analyzer.${{ steps.version.outputs.version }}.nupkg
+        path: artifacts/PackScan.Analyzer.${{ steps.version.outputs.version }}.nupkg
+        if-no-files-found: error
+
+    - name: Upload PackScan.Defaults
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: PackScan.Defaults.${{ steps.version.outputs.version }}.nupkg
+        path: artifacts/PackScan.Defaults.${{ steps.version.outputs.version }}.nupkg
+        if-no-files-found: error
+
+    - name: Upload PackScan.Tool
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: PackScan.Tool.${{ steps.version.outputs.version }}.nupkg
+        path: artifacts/PackScan.Tool.${{ steps.version.outputs.version }}.nupkg
+        if-no-files-found: error
+
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - dotnet-version: 3.1.x
+            dotnet-framework: netcoreapp3.1
+
+          - dotnet-version: 5.0.x
+            dotnet-framework: net5.0
+
+          - dotnet-version: 6.0.x
+            dotnet-framework: net6.0
+
+          - dotnet-version: 7.0.x
+            dotnet-framework: net7.0
+
+          - dotnet-version: 8.0.x
+            dotnet-framework: net8.0
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+
+    - name: Run Tests
+      run: |
+        dotnet test -f ${{ matrix.dotnet-framework }} -c Release

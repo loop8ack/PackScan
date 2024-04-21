@@ -12,6 +12,7 @@
     <IsRoslynComponent>true</IsRoslynComponent>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
     <DefineConstants>$(DefineConstants);PackScan_Analyzer</DefineConstants>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

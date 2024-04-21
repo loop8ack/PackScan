@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  
+jobs:
+  build:
+    uses: ./.github/workflows/Build.yml
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkup code
+        uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+          
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: PackScan.*.nupkg
+          merge-multiple: true
+
+      - name: Install NuGet Validator
+        run: |
+          dotnet tool update Meziantou.Framework.NuGetPackageValidation.Tool --global
+          dotnet tool restore
+
+      - name: Validate NuGet Packages 
+        run: |
+          files=$(ls artifacts/PackScan.*.nupkg)
+          dotnet meziantou.validate-nuget-package $files --excluded-rules Symbols
+
+      - name: Create version tag
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "<>"
+          git tag v${{ needs.build.outputs.version }}
+          git push origin v${{ needs.build.outputs.version }}
+
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v${{ needs.build.outputs.version }}
+
+      - name: Upload Release Binaries
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          files=$(ls artifacts/PackScan.*.nupkg)
+          gh release upload v${{ needs.build.outputs.version }} $files

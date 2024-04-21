@@ -11,6 +11,7 @@
     <NoWarn>$(NoWarn);NETSDK1138</NoWarn>
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <!-- Analyzer configuration -->

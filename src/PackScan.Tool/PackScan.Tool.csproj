@@ -9,6 +9,7 @@
     <ToolCommandName>packscan</ToolCommandName>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <DefineConstants>$(DefineConstants);PackScan_Tool</DefineConstants>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     
     <PackagesProviderOutputPath>_debug/result</PackagesProviderOutputPath>
     <PackagesProviderContentLoadMode>PreferUrl</PackagesProviderContentLoadMode>

@@ -6,7 +6,8 @@
 
   <!-- Test project properties -->
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
     <NoWarn>$(NoWarn);NETSDK1138</NoWarn>
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>

@@ -51,6 +51,19 @@ internal static class AnalyzerConfigOptionsExtensions
         return new(name, Diagnostics.OptionNotFound.Create(name));
     }
 
+    public static OptionValue<TimeSpan> GetOptionTimeSpan(this AnalyzerConfigOptions options, string name)
+    {
+        if (options.TryGetValue(Prefix + name, out string? str))
+        {
+            if (TimeSpan.TryParse(str, out TimeSpan value))
+                return new(name, value);
+
+            return new(name, Diagnostics.OptionNotParsedTimeSpan.Create(name, str));
+        }
+
+        return new(name, Diagnostics.OptionNotFound.Create(name));
+    }
+
     public static OptionValue<Size?> GetOptionNullableSKSize(this AnalyzerConfigOptions options, string name)
     {
         if (options.TryGetValue(Prefix + name, out string? str))

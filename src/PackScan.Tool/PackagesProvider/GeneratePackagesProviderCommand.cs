@@ -203,6 +203,12 @@ internal static class GeneratePackagesProviderCommand
         if ((parseResult, project).TryGetOptionOrPropertyValue(Options.DownloadCacheFolder, "PackagesProviderDownloadCacheFolder", out string? downloadCacheFolder) && downloadCacheFolder is not null and { Length: > 0 })
             generator.DownloadCacheFolder = Path.Combine(Path.GetDirectoryName(projectFilePath)!, downloadCacheFolder);
 
+        if ((parseResult, project).TryGetOptionOrPropertyValue(Options.DownloadCacheAccessTimeout, "PackagesProviderDownloadCacheAccessTimeout", TimeSpan.TryParse, out TimeSpan downloadCacheAccessTimeout) )
+            generator.DownloadCacheAccessTimeout = downloadCacheAccessTimeout;
+
+        if ((parseResult, project).TryGetOptionOrPropertyValue(Options.DownloadCacheAccessRetryDelay, "PackagesProviderDownloadCacheAccessRetryDelay", TimeSpan.TryParse, out TimeSpan downloadCacheAccessRetryDelay))
+            generator.DownloadCacheAccessRetryDelay = downloadCacheAccessRetryDelay;
+
         return generator;
 
     }

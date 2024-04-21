@@ -21,18 +21,18 @@ internal abstract class PackageContentLoader<TContent, TType> : IPackageContentL
     private readonly Dictionary<string, AsyncLazy<IPackageContent<TContent, TType>?>> _runningDownloads = new(StringComparer.OrdinalIgnoreCase);
     private readonly IPackagesProviderFilesManager _filesManager;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly string _downloadCacheFolder;
     private readonly IPackagesProviderFileModification? _modification;
+    private readonly PackageContentLoaderOptions _options;
 
     protected abstract IReadOnlyDictionary<string, TType> MimeTypeTypeMapping { get; }
     protected abstract IReadOnlyDictionary<string, TType> FileExtensionTypeMapping { get; }
 
-    protected PackageContentLoader(IPackagesProviderFilesManager filesManager, IHttpClientFactory httpClientFactory, string downloadCacheFolder, IPackagesProviderFileModification? modification)
+    protected PackageContentLoader(IPackagesProviderFilesManager filesManager, IHttpClientFactory httpClientFactory, IPackagesProviderFileModification? modification, PackageContentLoaderOptions options)
     {
         _filesManager = filesManager;
         _httpClientFactory = httpClientFactory;
-        _downloadCacheFolder = downloadCacheFolder;
         _modification = modification;
+        _options = options;
     }
 
     public IPackageContent<TContent, TType>? TryLoad(ContentLoadMode loadMode, IPackageContentData? contentData, CancellationToken cancellationToken)
@@ -145,26 +145,31 @@ internal abstract class PackageContentLoader<TContent, TType> : IPackageContentL
     private async Task<IPackageContent<TContent, TType>?> TryDownloadAsync(Uri url, CancellationToken cancellationToken)
     {
         string urlMD5Hash = CalcMD5Hash(url);
-        string tempFilePath = Path.Combine(_downloadCacheFolder, urlMD5Hash);
+        string tempFilePath = Path.Combine(_options.DownloadCacheFolder, urlMD5Hash);
 
-        if (!Directory.Exists(_downloadCacheFolder))
-            Directory.CreateDirectory(_downloadCacheFolder);
+        Directory.CreateDirectory(_options.DownloadCacheFolder);
 
-        lock (urlMD5Hash)
+        if (!File.Exists(tempFilePath))
         {
-            if (File.Exists(tempFilePath))
+            TimeSpan timeout = _options.DownloadCacheAccessTimeout;
+            TimeSpan retryDelay = _options.DownloadCacheAccessRetryDelay;
+
+            using (await LockFile.LockAsync(tempFilePath, timeout, retryDelay, cancellationToken))
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (!File.Exists(tempFilePath))
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
 
-                TType type = GetContentType(tempFilePath);
-
-                return AddFileAndCreateContent(tempFilePath, type);
+                    return await TryDownloadToTempFileAsync(url, tempFilePath, cancellationToken);
+                }
             }
         }
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return await TryDownloadAsync(url, tempFilePath, cancellationToken);
+        TType type = GetContentType(tempFilePath);
+
+        return AddFileAndCreateContent(tempFilePath, type);
     }
     private static string CalcMD5Hash(Uri uri)
     {
@@ -179,7 +184,7 @@ internal abstract class PackageContentLoader<TContent, TType> : IPackageContentL
                 .ToLower();
         }
     }
-    private async Task<IPackageContent<TContent, TType>?> TryDownloadAsync(Uri url, string tempFilePath, CancellationToken cancellationToken)
+    private async Task<IPackageContent<TContent, TType>?> TryDownloadToTempFileAsync(Uri url, string tempFilePath, CancellationToken cancellationToken)
     {
         using HttpRequestMessage message = new(HttpMethod.Get, url);
 
@@ -196,8 +201,13 @@ internal abstract class PackageContentLoader<TContent, TType> : IPackageContentL
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        using (Stream tempStream = File.Create(tempFilePath))
-            await response.Content.CopyToAsync(tempStream);
+        string uniqueTempFilePath = Path.Combine(Path.GetDirectoryName(tempFilePath), Guid.NewGuid().ToString("N"));
+
+        using (Stream fileStream = File.Create(uniqueTempFilePath))
+            await response.Content.CopyToAsync(fileStream);
+
+        File.Delete(tempFilePath);
+        File.Move(uniqueTempFilePath, tempFilePath);
 
         TType type = GetContentType(response, tempFilePath);
 

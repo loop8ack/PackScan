@@ -18,6 +18,7 @@ internal static class Diagnostics
         OptionNoParsedBool,
         OptionNoParsedValue,
         OptionNoParsedSize,
+        OptionNoParsedTimeSpan,
 
         // Licenses Analyzer
         LicenseNotAllowed = 200,
@@ -86,6 +87,23 @@ internal static class Diagnostics
                 id: $"{Prefix}{(int)Id.OptionNoParsedBool:000}",
                 title: "Not supported boolean value",
                 messageFormat: "Could not parse '{0}' value '{1}' as boolean. Supported values: true, false",
+                category: Category,
+                DiagnosticSeverity.Error,
+                isEnabledByDefault: true);
+
+        public static Diagnostic Create(string optionName, string value)
+        {
+            return Diagnostic.Create(Descriptor, Location.None, optionName, value);
+        }
+    }
+
+    public static class OptionNotParsedTimeSpan
+    {
+        public static DiagnosticDescriptor Descriptor { get; }
+            = new DiagnosticDescriptor(
+                id: $"{Prefix}{(int)Id.OptionNoParsedTimeSpan:000}",
+                title: "Not supported TimeSpan value",
+                messageFormat: "Could not parse '{0}' value '{1}' as TimeSpan.",
                 category: Category,
                 DiagnosticSeverity.Error,
                 isEnabledByDefault: true);

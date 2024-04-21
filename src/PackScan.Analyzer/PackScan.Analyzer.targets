@@ -35,6 +35,8 @@
     <CompilerVisibleProperty Include="PackagesProviderReadMeContentLoadMode" />
     <CompilerVisibleProperty Include="PackagesProviderReleaseNotesContentLoadMode" />
     <CompilerVisibleProperty Include="PackagesProviderDownloadCacheFolder" />
+    <CompilerVisibleProperty Include="PackagesProviderDownloadCacheAccessTimeout" />
+    <CompilerVisibleProperty Include="PackagesProviderDownloadCacheAccessRetryDelay" />
     <CompilerVisibleProperty Include="PackagesProviderWorkingDirectory" />
     <CompilerVisibleProperty Include="PackagesProviderIconContentMaxSize" />
 

@@ -104,7 +104,13 @@
 
         <!-- Download cache folder -->
         <PackagesProviderDownloadCacheFolder Condition="'$(PackagesProviderDownloadCacheFolder)' == ''"></PackagesProviderDownloadCacheFolder>
-    
+
+        <!-- Default timeout to access the download cache -->
+        <PackagesProviderDownloadCacheAccessTimeout Condition="'$(PackagesProviderDownloadCacheAccessTimeout)' == ''">00:00:01</PackagesProviderDownloadCacheAccessTimeout>
+
+        <!-- Default retry delay to access the download cache -->
+        <PackagesProviderDownloadCacheAccessRetryDelay Condition="'$(PackagesProviderDownloadCacheAccessRetryDelay)' == ''">00:00:00.01</PackagesProviderDownloadCacheAccessRetryDelay>
+        
       </PropertyGroup>
 
       <!-- ==================================================== -->

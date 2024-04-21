@@ -41,6 +41,8 @@ public sealed class PackagesProviderGenerator
     public ContentLoadMode ReadMeContentLoadMode { get; set; }
     public ContentLoadMode ReleaseNotesContentLoadMode { get; set; }
     public string? DownloadCacheFolder { get; set; }
+    public TimeSpan? DownloadCacheAccessTimeout { get; set; }
+    public TimeSpan? DownloadCacheAccessRetryDelay { get; set; }
 
     public IPackagesProviderFiles WriteCode(IEnumerable<IPackageData> packages, CancellationToken cancellationToken = default)
     {
@@ -65,9 +67,15 @@ public sealed class PackagesProviderGenerator
 
     private IPackageContentManager CreateAndLoadContentManager(HttpClientFactory httpClientFactory, IPackagesProviderFilesManager filesManager, IPackageData[] packagesData, CancellationToken cancellationToken)
     {
-        string downloadCacheFolderPath = DownloadCacheFolder is null or { Length: 0 }
-            ? Path.Combine(Path.GetTempPath(), "PackScan.PackagesProvider.Writer", "DownloadCache")
-            : Environment.ExpandEnvironmentVariables(DownloadCacheFolder);
+        PackageContentLoaderOptions contentLoaderOptions = new()
+        {
+            DownloadCacheFolder = DownloadCacheFolder is null or { Length: 0 }
+                ? Path.Combine(Path.GetTempPath(), "PackScan.PackagesProvider.Writer", "DownloadCache")
+                : Environment.ExpandEnvironmentVariables(DownloadCacheFolder),
+
+            DownloadCacheAccessTimeout = DownloadCacheAccessTimeout ?? TimeSpan.FromSeconds(1),
+            DownloadCacheAccessRetryDelay = DownloadCacheAccessRetryDelay ?? TimeSpan.FromMilliseconds(10)!,
+        };
 
         IPackagesProviderFileModification? iconContentModification = IconContentMaxSize is not null
             ? new ReduceImageContentSizeModification(IconContentMaxSize.Value)
@@ -76,16 +84,16 @@ public sealed class PackagesProviderGenerator
         PackageContentManager contentManager = new()
         {
             IconLoadMode = IconContentLoadMode,
-            IconContentLoader = new PackageImageContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath, iconContentModification),
+            IconContentLoader = new PackageImageContentLoader(filesManager, httpClientFactory, iconContentModification, contentLoaderOptions),
 
             LicenseLoadMode = LicenseContentLoadMode,
-            LicenseContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath, modification: null),
+            LicenseContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, modification: null, contentLoaderOptions),
 
             ReadMeLoadMode = ReadMeContentLoadMode,
-            ReleaseNotesContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath, modification: null),
+            ReleaseNotesContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, modification: null, contentLoaderOptions),
 
             ReleaseNotesLoadMode = ReleaseNotesContentLoadMode,
-            ReadMeContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, downloadCacheFolderPath, modification: null),
+            ReadMeContentLoader = new PackageTextContentLoader(filesManager, httpClientFactory, modification: null, contentLoaderOptions),
         };
 
         contentManager.LoadAll(packagesData, LoadContentParallel, cancellationToken);

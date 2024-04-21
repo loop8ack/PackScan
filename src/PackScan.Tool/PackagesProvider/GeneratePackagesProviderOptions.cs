@@ -144,4 +144,16 @@ internal static class GeneratePackagesProviderOptions
         """
     )
     { IsRequired = false };
+
+    public static Option<TimeSpan> DownloadCacheAccessTimeout { get; } = new("--download-cache-access-timeout", $"""
+        Specifies the maximum timeout for accessing the download cache.
+        """
+    )
+    { IsRequired = false };
+
+    public static Option<TimeSpan> DownloadCacheAccessRetryDelay { get; } = new("--download-cache-access-retry-delay", $"""
+        Sets the delay between retry attempts when accessing the download cache.
+        """
+    )
+    { IsRequired = false };
 }

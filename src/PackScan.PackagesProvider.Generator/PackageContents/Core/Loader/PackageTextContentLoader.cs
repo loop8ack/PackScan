@@ -10,8 +10,8 @@ internal sealed class PackageTextContentLoader : PackageContentLoader<string, Te
     protected override IReadOnlyDictionary<string, TextType> MimeTypeTypeMapping => FileExtensionMappings.TextTypeByMimeType;
     protected override IReadOnlyDictionary<string, TextType> FileExtensionTypeMapping => FileExtensionMappings.TextTypeByExtension;
 
-    public PackageTextContentLoader(IPackagesProviderFilesManager filesManager, IHttpClientFactory httpClientFactory, string downloadCacheFolder, IPackagesProviderFileModification? modification)
-        : base(filesManager, httpClientFactory, downloadCacheFolder, modification)
+    public PackageTextContentLoader(IPackagesProviderFilesManager filesManager, IHttpClientFactory httpClientFactory, IPackagesProviderFileModification? modification, PackageContentLoaderOptions options)
+        : base(filesManager, httpClientFactory, modification, options)
     {
     }
 

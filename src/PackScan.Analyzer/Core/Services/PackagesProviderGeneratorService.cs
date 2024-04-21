@@ -33,7 +33,10 @@ internal record class PackagesProviderGeneratorService
     private OptionValue<ContentLoadMode> LicenseContentLoadMode { get; set; }
     private OptionValue<ContentLoadMode> ReadMeContentLoadMode { get; set; }
     private OptionValue<ContentLoadMode> ReleaseNotesContentLoadMode { get; set; }
-
+    private OptionValue<string> DownloadCacheFolder { get; set; }
+    private OptionValue<TimeSpan> DownloadCacheAccessTimeout { get; set; }
+    private OptionValue<TimeSpan> DownloadCacheAccessRetryDelay { get; set; }
+    
     public PackagesProviderGeneratorService(AnalyzerConfigOptions options)
     {
         _readerService = new(options);
@@ -50,6 +53,9 @@ internal record class PackagesProviderGeneratorService
         LicenseContentLoadMode = options.GetOptionEnum<ContentLoadMode>("PackagesProviderLicenseContentLoadMode");
         ReadMeContentLoadMode = options.GetOptionEnum<ContentLoadMode>("PackagesProviderReadMeContentLoadMode");
         ReleaseNotesContentLoadMode = options.GetOptionEnum<ContentLoadMode>("PackagesProviderReleaseNotesContentLoadMode");
+        DownloadCacheFolder = options.GetOptionString("PackagesProviderDownloadCacheFolder");
+        DownloadCacheAccessTimeout = options.GetOptionTimeSpan("PackagesProviderDownloadCacheAccessTimeout");
+        DownloadCacheAccessRetryDelay = options.GetOptionTimeSpan("PackagesProviderDownloadCacheAccessRetryDelay");
     }
 
     public void Generate(SourceProductionContext context)
@@ -111,6 +117,9 @@ internal record class PackagesProviderGeneratorService
             ReadMeContentLoadMode = ReadMeContentLoadMode,
             ReleaseNotesContentLoadMode = ReleaseNotesContentLoadMode,
             ProductInfoProvider = new AssemblyProductInfoProvider(Assembly.GetExecutingAssembly()),
+            DownloadCacheFolder = DownloadCacheFolder,
+            DownloadCacheAccessTimeout = DownloadCacheAccessTimeout,
+            DownloadCacheAccessRetryDelay = DownloadCacheAccessRetryDelay,
         }.WriteCode(packagesData, context.CancellationToken);
 
         foreach (IPackagesProviderFile file in files.Files)

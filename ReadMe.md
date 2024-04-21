@@ -293,6 +293,14 @@ Default value: `true`
 Specifies the folder path where the downloaded contents should be cached.</br>
 Default value: `%temp%/PackScan.PackagesProvider.Writer/DownloadCache`
 
+- **PackagesProviderDownloadCacheAccessTimeout**</br>
+Specifies the maximum timeout for accessing the download cache.</br>
+Default value: `00:00:01` (1 Second)
+
+- **PackagesProviderDownloadCacheAccessRetryDelay**</br>
+Sets the delay between retry attempts when accessing the download cache.</br>
+Default value: `00:00:00.01` (10 Milliseconds)
+
 ### CLI Parameters
 
 - **-f, --target-framework** | Specifies the target framework for the project. Default value: The current target framework of the project.
@@ -315,6 +323,8 @@ Default value: `%temp%/PackScan.PackagesProvider.Writer/DownloadCache`
 - **--readme-load-mode** | Overrides the project property **PackagesProviderReadMeContentLoadMode**.
 - **--release-notes-load-mode** | Overrides the project property **PackagesProviderReleaseNotesContentLoadMode**.
 - **--download-cache-folder** | Overrides the project property **PackagesProviderDownloadCacheFolder**.
+- **--release-notes-load-mode** | Overrides the project property **PackagesProviderDownloadCacheAccessTimeout**.
+- **--download-cache-folder** | Overrides the project property **PackagesProviderDownloadCacheAccessRetryDelay**.
 
 ## Enums
 
@@ -358,6 +368,20 @@ Contributions are welcome! If you have any suggestions, ideas, or bug reports, p
 If you would like to contribute code, please fork the repository and create a pull request with your changes.
 
 # ChangeLog
+
+## [v0.3.2 - 2024-04-21](https://github.com/loop8ack/PackScan/releases/tag/v0.3.2)
+### Security
+- 🔒 **Security Update**: SixLabors.ImageSharp vulnerability patch
+
+### Added
+- Lock access to download cache
+
+## [v0.3.1 - 2024-04-14](https://github.com/loop8ack/PackScan/releases/tag/v0.3.1)
+### Security
+- 🔒 **Security Update**: SixLabors.ImageSharp vulnerability patch
+
+### Changed
+- Generate namespaces with "global::"
 
 ## [v0.3.0 - 2023-11-13](https://github.com/loop8ack/PackScan/releases/tag/v0.3.0)
 ### Added

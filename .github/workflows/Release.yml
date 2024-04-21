@@ -29,13 +29,12 @@ jobs:
 
       - name: Install NuGet Validator
         run: |
-          dotnet tool update Meziantou.Framework.NuGetPackageValidation.Tool --global
-          dotnet tool restore
+          dotnet tool install Meziantou.Framework.NuGetPackageValidation.Tool --global
 
       - name: Validate NuGet Packages 
         run: |
           files=$(ls artifacts/PackScan.*.nupkg)
-          dotnet meziantou.validate-nuget-package $files --excluded-rules Symbols
+          meziantou.validate-nuget-package $files --excluded-rules Symbols
 
       - name: Create version tag
         run: |
@@ -56,3 +55,9 @@ jobs:
         run: |
           files=$(ls artifacts/PackScan.*.nupkg)
           gh release upload v${{ needs.build.outputs.version }} $files
+
+      - name: Push to nuget.org
+        run: |
+          find "artifacts" -name '*.nupkg' -type f | while read file; do
+              dotnet nuget push "$file" --api-key "${{ secrets.NUGET_PUSH }}" --source "https://api.nuget.org/v3/index.json"
+          done

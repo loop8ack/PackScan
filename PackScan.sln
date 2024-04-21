@@ -11,7 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		build.ps1 = build.ps1
 		Directory.Build.props = Directory.Build.props
 		global.json = global.json
 		Icon.png = Icon.png
@@ -40,9 +39,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F9F7EE5C-D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackScan.Defaults", "src\PackScan.Defaults\PackScan.Defaults.csproj", "{09F68765-D0A7-4522-85AE-F3B66E3562C0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{B417386C-0789-42CA-B211-4931D21F641F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{067049B2-9E35-4157-95FD-34FB8430FD02}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{E4996529-1814-4CF7-951D-517AAECC5530}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{624C263A-396D-4E64-B8CF-D3349A14B212}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\Build.yml = .github\workflows\Build.yml
 		.github\workflows\Release.yml = .github\workflows\Release.yml
@@ -87,15 +86,15 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{067049B2-9E35-4157-95FD-34FB8430FD02} = {40512514-8795-4C6A-A58F-6AFC87C17B2F}
 		{26685B24-B2D0-4C68-AE5F-230F9424DBF5} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
+		{624C263A-396D-4E64-B8CF-D3349A14B212} = {067049B2-9E35-4157-95FD-34FB8430FD02}
 		{6A110BE4-B6E9-48A6-BFEB-1E3F2E90B84D} = {F9F7EE5C-DD30-439B-ABB0-33947D2C833B}
 		{9E8281F2-EC4E-404E-8D3C-72759FEC6D62} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
 		{51C5972D-550E-4123-98DD-4ED087E44C5F} = {F9F7EE5C-DD30-439B-ABB0-33947D2C833B}
 		{8F2E4832-2A8E-46CB-98F8-3ECE0F45CF3D} = {F9F7EE5C-DD30-439B-ABB0-33947D2C833B}
 		{19E1358B-9100-4905-BA7B-A38A6C29E723} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
 		{167D32AA-CBBC-4772-9898-41A69A17AED8} = {B4BAADD5-BEF6-4D5B-9CB6-48C85D7D5D06}
-		{B417386C-0789-42CA-B211-4931D21F641F} = {40512514-8795-4C6A-A58F-6AFC87C17B2F}
-		{E4996529-1814-4CF7-951D-517AAECC5530} = {B417386C-0789-42CA-B211-4931D21F641F}
 		{F9F7EE5C-DD30-439B-ABB0-33947D2C833B} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
 		{09F68765-D0A7-4522-85AE-F3B66E3562C0} = {1EF8F5B9-DD77-4162-A819-85A2B49FED7B}
 	EndGlobalSection
@@ -109,4 +108,6 @@ Global
 		src\PackScan.Shared\PackScan.Shared.projitems*{8f2e4832-2a8e-46cb-98f8-3ece0f45cf3d}*SharedItemsImports = 5
 		src\PackScan.Shared\PackScan.Shared.projitems*{9e8281f2-ec4e-404e-8d3c-72759fec6d62}*SharedItemsImports = 13
 	EndGlobalSection
+EndGlobal
+lobalSection
 EndGlobal
